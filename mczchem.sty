@@ -1,0 +1,198 @@
+% Working environment for everything chemistry
+% Sets up formatting (by default)
+% Also includes a slew of packages: amsmath, amsthm, graphicx, tikz
+% hyperref, mhchem, enumitem, tabular
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mczchem}[2014/07/16 v0.1]
+
+\RequirePackage{kvoptions}
+
+% Options to allow disabling stuff if another driver has to be used
+\DeclareBoolOption[true]{usefonts}
+\DeclareBoolOption[true]{microtype}
+
+\DeclareBoolOption[true]{fullpage}
+
+% General requirements
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\RequirePackage[version=3,arrows=pgf]{mhchem}
+\RequirePackage{enumitem}
+\RequirePackage{tabulary}
+\RequirePackage{xparse}
+\RequirePackage{suffix}
+\RequirePackage{etoolbox}
+
+\ProcessKeyvalOptions*
+
+\ifmczchem@usefonts
+	\RequirePackage{tocloft}
+	\RequirePackage{titlesec}
+	\RequirePackage{titling}
+	\RequirePackage[no-math]{fontspec}
+	\defaultfontfeatures{Ligatures=TeX}
+	\setmainfont{Minion Pro}
+	\setmonofont[Scale=MatchLowercase]{Cousine}
+	\setsansfont%
+ 	[ Scale=MatchLowercase,
+	  ItalicFont=Optima LT Std Italic,
+   	  BoldFont=Optima LT Std Bold,
+   	  BoldItalicFont=Optima LT Std Bold Italic]{Optima LT Std Roman}
+	\newcommand\headfamily\sffamily
+	\newfontface\subtitleface{Optima LT Std Medium}
+
+	\usepackage[math-style=TeX,vargreek-shape=unicode]{unicode-math}
+	\setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
+
+	% titlesec
+	\titleformat*{\section}{\Large\headfamily\bfseries}
+	\titleformat*{\subsection}{\large\headfamily\bfseries}
+	\titleformat*{\subsubsection}{\headfamily\bfseries}
+	
+	% titling
+	\renewcommand{\maketitlehooka}{\headfamily\bfseries}
+	\renewcommand{\maketitlehookb}{\mdseries\subtitleface}
+	
+	% tocloft
+	\renewcommand{\cfttoctitlefont}{\Large\headfamily\bfseries}
+	%\renewcommand{\cftchapfont}{\headfamily\bfseries}
+	\renewcommand{\cftsecfont}{\headfamily\bfseries}
+	\renewcommand{\cftsecpagefont}{\headfamily\bfseries}
+\else
+	\newcommand\headfamily\sffamily
+\fi
+
+\ifmczchem@microtype
+	\RequirePackage{microtype}
+\fi
+
+\@ifclassloaded{beamer}
+  {\relax}
+  {\RequirePackage{multicol}
+   \ifmczchem@fullpage
+   	 \RequirePackage{fullpage}
+   \fi}
+
+
+% Citations
+\RequirePackage[numbers,comma,super,sort&compress]{natbib}
+\RequirePackage{natmove}
+\DeclareRobustCommand\onlinecite{\@onlinecite}
+\def\@onlinecite#1{\begingroup\let\@cite\NAT@citenum\citealp{#1}\endgroup}
+
+% Hyperlinks
+\RequirePackage{hyperref}
+\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+\def\sectionautorefname{Section}
+
+% Captions
+\RequirePackage[labelfont={bf},font=small]{caption}
+
+% Formatting
+\providecommand{\acro}[1]{\textsc{\expandafter\MakeTextLowercase\expandafter{#1}}}
+\newcommand{\strong}[1]{\textbf{#1}}
+\newcommand{\stronghead}[1]{\textbf{\headfamily #1}}
+
+% List formatting
+\newcommand{\enumitem}[1]{\stronghead{#1}}
+\setlist[enumerate]{label=\enumitem{\arabic*.}}
+\renewcommand{\labelitemii}{\rule[0.5ex]{0.55ex}{0.55ex}}
+\renewcommand{\arraystretch}{1.2}
+
+% Math formatting
+\newcommand{\about}{\ensuremath{\sim}}
+\renewcommand{\d}{d\!}
+\newcommand{\subword}[1]{_{\text{#1}}}
+\newcommand{\supword}[1]{^{\text{#1}}}
+\renewcommand{\ij}{{i\mkern-5mu j}}
+\newcommand{\ii}{{i\mkern-3mu i}}
+\newcommand{\ji}{{j\mkern-3mu i}}
+\let\@oldvec\vec
+\ifmczchem@usefonts
+	\renewcommand{\vec}[1]{\mkern2mu\overrightarrow{\mkern-2mu#1}}
+\fi
+%  unit vectors
+\newcommand{\xunit}{\ensuremath{\mkern2mu \vec{\textbf{ı}} \mkern2mu}}
+\newcommand{\yunit}{\ensuremath{\mkern2mu \vec{\textbf{ȷ}} \mkern2mu}}
+\newcommand{\zunit}{\ensuremath{\mkern2mu \vec{\textbf{k}} \mkern2mu}}
+\DeclareMathOperator{\erfc}{erfc}
+
+
+% Scientific nomenclature and formatting
+\newcommand{\degrees}{\ensuremath{^\circ}}
+\newcommand{\kB}{\ensuremath{k_\mathrm{B}}}
+
+% dirty trick for SN1, SN2: looks like \SN1, \SN2, but is really
+% \SN{1}, \SN{2}
+\newcommand{\SN}[1]{\ensuremath{\text{S}_\text{N}#1}}
+
+\newcommand{\Gas}{\ce{{(g)}}}
+\newcommand{\Aq}{\ce{{(aq)}}}
+\newcommand{\Liquid}{\ce{{(\ell)}}}
+\newcommand{\Solid}{\ce{{(s)}}}
+\newcommand{\Std}{\ensuremath{^\circ}}
+
+\newcommand{\FaradayConst}{\ensuremath{\mathcal{F}}}
+\newcommand{\Ecell}{\ensuremath{E_{\mathrm{cell}}}}
+\newcommand{\Voltage}{\ensuremath{\mathcal{V}}}
+
+%  pH, pOH, pKa, pKb, etc
+\newcommand{\p}{\ensuremath{\mathrm{p}}}
+\newcommand{\Kw}{\ensuremath{K_\mathrm{w}}}
+\newcommand{\pKw}{\ensuremath{\p \Kw}}
+\newcommand{\pH}{\ensuremath{\mathrm{pH}}}
+\newcommand{\pOH}{\ensuremath{\mathrm{pOH}}}
+
+\newcommand\Ka[1][]{%
+  \ifstrempty{#1}{%
+    \ensuremath{K_\mathrm{a}}%
+  }{%
+    \ensuremath{K_{\mathrm{a}_{#1}}}%
+  }%
+}
+
+\newcommand\pKa[1][]{%
+  \ifstrempty{#1}{%
+    \ensuremath{\mathrm{p}K_\mathrm{a}}%
+  }{%
+    \ensuremath{\mathrm{p}K_{\mathrm{a}_{#1}}}%
+  }%
+}
+
+\newcommand\Kb[1][]{%
+  \ifstrempty{#1}{%
+    \ensuremath{K_\mathrm{b}}%
+  }{%
+    \ensuremath{K_{\mathrm{b}_{#1}}}%
+  }%
+}
+
+\newcommand\pKb[1][]{%
+  \ifstrempty{#1}{%
+    \ensuremath{\mathrm{p}K_\mathrm{b}}%
+  }{%
+    \ensuremath{\mathrm{p}K_{\mathrm{b}_{#1}}}%
+  }%
+}
+
+% Units
+\newcommand\unit[1]{\ensuremath{\;\text{#1}}}
+\WithSuffix\newcommand\unit*[1]{\ensuremath{\text{#1}}}
+\newcommand\munit[1]{\ensuremath{\;\mathrm{#1}}}
+\WithSuffix\newcommand\munit*[1]{\ensuremath{\mathrm{#1}}}
+\newcommand{\degC}{\unit{°C}}
+\WithSuffix\newcommand\degC*{\unit*{°C}}
+\newcommand{\Angstrom}{\mbox{\AA}}
+\newcommand{\microsecond}{\unit{\mu s}}
+\newcommand{\molal}{\ \mbox{\textit{m}}}
+\newcommand{\LAtmMolK}{\ensuremath{\unit{L}\cdot\unit*{atm}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
+\newcommand{\LTorrMolK}{\ensuremath{\unit{L}\cdot\unit*{Torr}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
+\newcommand{\MolPerLAtm}{\ensuremath{\unit{mol}\cdot\unit*{L}^{-1}\cdot\unit*{atm}^{-1}}}
+\newcommand{\LBarMolK}{\ensuremath{\unit{L}\cdot\unit*{bar}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
+
+% Extensions to the exam class (exams, quizzes, printed surveys, etc)
+\@ifclassloaded{exam}
+  {\newenvironment{mccheckboxes}[1]{\begin{checkboxes}\begin{multicols}{#1}}{\end{multicols}\end{checkboxes}}}
+  {\relax}
