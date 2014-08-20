@@ -30,7 +30,13 @@
 	\RequirePackage[no-math]{fontspec}
 	\defaultfontfeatures{Ligatures=TeX}
 	\setmainfont{Minion Pro}
-	\setmonofont[Scale=MatchLowercase]{Cousine}
+	%\setmonofont[Scale=MatchLowercase]{Cousine}
+	\setmonofont[Scale=MatchLowercase]{Source Code Pro}
+	
+	\newfontfamily\rmdemifamily{Minion Pro Semibold}%
+	[ItalicFont=Minion Pro Semibold Italic,
+	 BoldFont=Minion Pro Bold,
+	 BoldItalicFont=Minion Pro Bold Italic]
 	
 	\@ifclassloaded{beamer}{
 	\setsansfont%
@@ -56,7 +62,8 @@
 	
 	\usepackage[math-style=TeX,vargreek-shape=unicode]{unicode-math}
 	\setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
-
+\else
+	\newcommand\rmdemifamily\bfseries
 \fi
 
 \newcommand\headfamily\sffamily
@@ -95,16 +102,18 @@
    }
 
 
+% Hyperlinks
+\PassOptionsToPackage{hyphens}{url}
+\RequirePackage{hyperref}
+\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,breaklinks=true}
+\def\sectionautorefname{Section}
+
 % Citations
 \RequirePackage[numbers,comma,super,sort&compress]{natbib}
 \RequirePackage{natmove}
 \DeclareRobustCommand\onlinecite{\@onlinecite}
 \def\@onlinecite#1{\begingroup\let\@cite\NAT@citenum\citealp{#1}\endgroup}
-
-% Hyperlinks
-\RequirePackage{hyperref}
-\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
-\def\sectionautorefname{Section}
+\newcommand{\doilink}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
 
 % Captions
 \RequirePackage[labelfont={bf},font=small]{caption}
@@ -129,8 +138,8 @@
 % Math formatting
 \newcommand{\about}{\ensuremath{\sim}}
 \renewcommand{\d}{d\!}
-\newcommand{\subword}[1]{_{\text{#1}}}
-\newcommand{\supword}[1]{^{\text{#1}}}
+\newcommand{\subword}[1]{_{\text{\normalfont #1}}}
+\newcommand{\supword}[1]{^{\text{\normalfont #1}}}
 \renewcommand{\ij}{{i\mkern-5mu j}}
 \newcommand{\ii}{{i\mkern-3mu i}}
 \newcommand{\ji}{{j\mkern-3mu i}}
@@ -138,6 +147,9 @@
 \ifmczchem@usefonts
 	\renewcommand{\vec}[1]{\mkern2mu\overrightarrow{\mkern-2mu#1}}
 \fi
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\Complex}{\mathbb{C}}
+
 %  unit vectors
 \newcommand{\xunit}{\ensuremath{\mkern2mu \vec{\textbf{ı}} \mkern2mu}}
 \newcommand{\yunit}{\ensuremath{\mkern2mu \vec{\textbf{ȷ}} \mkern2mu}}
@@ -203,8 +215,11 @@
 }
 
 % Units
+% \unit(*) changes with text font and does not support math in its 
+% argument
 \newcommand\unit[1]{\ensuremath{\;\text{#1}}}
 \WithSuffix\newcommand\unit*[1]{\ensuremath{\text{#1}}}
+% \munit(*) uses mathrm and does support math in its argument
 \newcommand\munit[1]{\ensuremath{\;\mathrm{#1}}}
 \WithSuffix\newcommand\munit*[1]{\ensuremath{\mathrm{#1}}}
 \newcommand{\degC}{\unit{°C}}
@@ -221,3 +236,41 @@
 \@ifclassloaded{exam}
   {\newenvironment{mccheckboxes}[1]{\begin{checkboxes}\begin{multicols}{#1}}{\end{multicols}\end{checkboxes}}}
   {\relax}
+
+% Presentation set up
+
+\@ifclassloaded{beamer}{
+\renewcommand{\sectionname}{Part}
+\setbeamertemplate{itemize item}{\scriptsize\raise1.25pt\hbox{\donotcoloroutermaths$\bullet$}}
+\setbeamertemplate{itemize subitem}{\rule[0.5ex]{0.55ex}{0.55ex}}
+\setbeamertemplate{itemize subsubitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\bullet$}}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+
+\setbeamerfont{quote}{series=\bfseries}
+\newcommand{\cqleader}{—\ }
+\newcommand{\citequote}[1]{\begin{flushright}\usebeamerfont*{block body}\small\cqleader #1\end{flushright}}
+
+\newcommand{\blankslide}{\only<beamer>{\begin{frame}\end{frame}}}
+
+% Raise body?
+%\addtobeamertemplate{block begin}{\vspace{-25pt}}{}
+\urlstyle{sf}
+
+\newcommand{\footlineextra}[1]{
+    \begin{tikzpicture}[remember picture,overlay]
+        \node[yshift=1ex,anchor=south west] at (current page.south west) {\usebeamerfont{author in head/foot}\hspace{2ex}#1};
+    \end{tikzpicture}
+}
+
+% Citation notes: plain, left-justified, centered, right-justified
+\newcommand{\citenote}[1]{\itshape\scriptsize#1}
+\newcommand{\citenotel}[1]{\raggedright\citenote{#1}}
+\newcommand{\citenotec}[1]{\centering\citenote{#1}}
+\newcommand{\citenoter}[1]{\raggedleft\citenote{#1}}
+
+\newcommand{\slidenote}[1]{\footlineextra{#1}}
+\newcommand{\slidecite}[1]{\footlineextra{\citenote{#1}}}
+
+\mode<presentation>{\usetheme{default}\usecolortheme{dove}\usefonttheme{professionalfonts}}
+}{\relax}
