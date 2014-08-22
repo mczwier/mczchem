@@ -37,20 +37,25 @@
 	[ItalicFont=Minion Pro Semibold Italic,
 	 BoldFont=Minion Pro Bold,
 	 BoldItalicFont=Minion Pro Bold Italic]
+	 
+	\newfontfamily\sfmediumfamily{Optima LT Std Medium}%
+		[ItalicFont=Optima LT Std Medium Italic,
+		 BoldFont=Optima LT Std Black,
+		 BoldItalicFont=Optima Lt Std Black Italic]
+	
+	\newfontfamily\sfdemifamily{Optima LT Std Demi}%
+		[ItalicFont=Optima LT Std Demi Italic,
+		 BoldFont=Optima LT Std Extra Black,
+		 BoldItalicFont=Optima Lt Std Extra Black Italic]
 	
 	\@ifclassloaded{beamer}{
 	\setsansfont%
  	[ Scale=MatchLowercase,
 	  ItalicFont=Optima LT Std Italic,
-   	  BoldFont=Optima LT Std Bold,
-   	  BoldItalicFont=Optima LT Std Bold Italic]{Optima LT Std Roman}
+   	  BoldFont=Optima LT Std Demi,
+   	  BoldItalicFont=Optima LT Std Demi Italic]{Optima LT Std Roman}
 	  \newfontface\subtitleface{Optima LT Std Demi}
 	  %\usepackage{mathpazo}
-	  
-		% These should probably migrate into a theme at some point
-		\setbeamerfont{frametitle}{family=\fontspec{Optima LT Std Medium}}
-		\setbeamerfont{title}{family=\fontspec{Optima LT Std Medium}}
-		\setbeamerfont{subtitle}{family=\fontspec{Optima LT Std Roman}}
 	  
 	}{\setsansfont%
  	[ Scale=MatchLowercase,
@@ -64,6 +69,8 @@
 	\setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
 \else
 	\newcommand\rmdemifamily\bfseries
+	\newcommand\sfmediumfamily\mdseries
+	\newcommand\sfdemifamily\bfseries
 \fi
 
 \newcommand\headfamily\sffamily
@@ -244,10 +251,19 @@
 \setbeamertemplate{itemize item}{\scriptsize\raise1.25pt\hbox{\donotcoloroutermaths$\bullet$}}
 \setbeamertemplate{itemize subitem}{\rule[0.5ex]{0.55ex}{0.55ex}}
 \setbeamertemplate{itemize subsubitem}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\bullet$}}
-\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\setbeamertemplate{caption}{\centering\insertcaption\par}
 
+% These should probably migrate into a theme at some point
+%\setbeamerfont{frametitle}{family=\sfmediumfamily}
+%\setbeamerfont{title}{family=\sfmediumfamily}
+\setbeamerfont{frametitle}{family=\sfdemifamily}
+\setbeamerfont{title}{family=\sfdemifamily}
+\setbeamerfont{subtitle}{family=\sfmediumfamily}
 
-\setbeamerfont{quote}{series=\bfseries}
+%\setbeamerfont{quote}{series=\bfseries}
+%\setbeamerfont{block title}{series=\bfseries}
+\setbeamerfont{quote}{family=\sfdemifamily}
+\setbeamerfont{block title}{family=\sfdemifamily}
 \newcommand{\cqleader}{—\ }
 \newcommand{\citequote}[1]{\begin{flushright}\usebeamerfont*{block body}\small\cqleader #1\end{flushright}}
 
