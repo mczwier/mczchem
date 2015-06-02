@@ -176,12 +176,13 @@
 \ifmczchem@usefonts
 	\renewcommand{\vec}[1]{\mkern2mu\overrightarrow{\mkern-2mu#1}}
 \fi
+\newcommand{\mat}[1]{\mathbfup{#1}}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\Complex}{\mathbb{C}}
 
 \newcommand{\ket}[1]{\ensuremath{\left| #1 \right>}}
 \newcommand{\bra}[1]{\ensuremath{\left< #1 \right|}}
-\newcommand{\braket}[2]{\ensuremath{\left< #1 \right| \left. #2 \right>}}
+\newcommand{\braket}[2]{\ensuremath{\left< #1 \left| \right. #2 \right>}}
 \WithSuffix\newcommand\braket*[3]{\ensuremath{\left< #1 \left| \mkern3mu #2 \mkern3mu \right| #3 \right>}}
 \newcommand{\operator}[1]{\ensuremath{\widehat{#1}}}
 
