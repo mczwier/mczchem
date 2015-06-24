@@ -10,7 +10,6 @@
 % Options to allow disabling stuff if another driver has to be used
 \DeclareBoolOption[true]{usefonts}
 \DeclareBoolOption[true]{microtype}
-
 \DeclareBoolOption[true]{fullpage}
 
 % General requirements
@@ -29,10 +28,17 @@
 
 \ProcessKeyvalOptions*
 
+%\definecolor{DrakeBlue}{HTML}{12367C}
+%\definecolor{DrakeCompRed}{HTML}{982700}
+\definecolor{DrakeBlue}{HTML}{004477}
+%\definecolor{DrakeCompRed}{HTML}{552222}
+\definecolor{DrakeCompRed}{HTML}{880033}
+
 \ifmczchem@usefonts
 	%\RequirePackage[no-math]{fontspec}
     \RequirePackage{fontspec}
 	\defaultfontfeatures{Ligatures=TeX}
+
 	\setmainfont[ItalicFont=Minion Pro Italic,
 				 BoldFont=Minion Pro Bold,
 				 BoldItalicFont=Minion Pro Bold Italic]{Minion Pro Regular}
@@ -102,23 +108,23 @@
 
 
 	% titlesec
-	\titleformat*{\section}{\Large\headfamily\bfseries}
-	\titleformat*{\subsection}{\large\headfamily\bfseries}
-	\titleformat*{\subsubsection}{\headfamily\bfseries}
+	\titleformat*{\section}{\Large\headfamily\bfseries\color{DrakeBlue}}
+	\titleformat*{\subsection}{\large\headfamily\bfseries\color{DrakeBlue}}
+	\titleformat*{\subsubsection}{\headfamily\bfseries\color{DrakeBlue}}
 	
 	% titling
-	\renewcommand{\maketitlehooka}{\headfamily\bfseries}
-	\renewcommand{\maketitlehookb}{\mdseries\subtitleface}
+	\renewcommand{\maketitlehooka}{\headfamily\bfseries\color{DrakeBlue}}
+	\renewcommand{\maketitlehookb}{\mdseries\subtitleface\color{DrakeBlue}}
 	
 	% tocloft
-	\renewcommand{\cfttoctitlefont}{\Large\headfamily\bfseries}
-    \renewcommand{\cftloftitlefont}{\Large\headfamily\bfseries}
+	\renewcommand{\cfttoctitlefont}{\Large\headfamily\bfseries\color{DrakeBlue}}
+    \renewcommand{\cftloftitlefont}{\Large\headfamily\bfseries\color{DrakeBlue}}
     %\renewcommand{\cftfigfont}{\sfdemifamily}
-    \renewcommand{\cftfigfont}{\headfamily\bfseries}
-    \renewcommand{\cftfigpagefont}{\headfamily\bfseries}
+    \renewcommand{\cftfigfont}{\headfamily\bfseries\color{DrakeBlue}}
+    \renewcommand{\cftfigpagefont}{\headfamily\bfseries\color{DrakeBlue}}
 	%\renewcommand{\cftchapfont}{\headfamily\bfseries}
-	\renewcommand{\cftsecfont}{\headfamily\bfseries}
-	\renewcommand{\cftsecpagefont}{\headfamily\bfseries} 
+	\renewcommand{\cftsecfont}{\headfamily\bfseries\color{DrakeBlue}}
+	\renewcommand{\cftsecpagefont}{\headfamily\bfseries\color{DrakeBlue}} 
 
    \fi
    }
@@ -127,11 +133,17 @@
 % Hyperlinks
 \PassOptionsToPackage{hyphens}{url}
 \RequirePackage{hyperref}
-\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,breaklinks=true}
-\def\sectionautorefname{Section}
+%\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,breaklinks=true}
+%\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=DrakeBlue,citecolor=DrakeBlue,urlcolor=DrakeBlue,breaklinks=true}
+\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=DrakeCompRed,citecolor=DrakeCompRed,urlcolor=DrakeCompRed,breaklinks=true}
+%\def\sectionautorefname{Section}
+\renewcommand\chapterautorefname{Chapter}
+\renewcommand\sectionautorefname{Section}
+\renewcommand\subsectionautorefname{\sectionautorefname}
+\renewcommand\subsubsectionautorefname{\sectionautorefname}
 
 \newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{ISBN #1}}
-
+\newcommand{\fnhref}[2]{\href{#1}{#2}\footnote{\url{#1}}}
 
 % Citations
 \RequirePackage[numbers,comma,super,sort&compress]{natbib}
