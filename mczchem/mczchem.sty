@@ -11,6 +11,7 @@
 \DeclareBoolOption[true]{usefonts}
 \DeclareBoolOption[true]{microtype}
 \DeclareBoolOption[true]{fullpage}
+\DeclareBoolOption[true]{color}
 
 % General requirements
 \RequirePackage{amsmath}
@@ -28,11 +29,18 @@
 
 \ProcessKeyvalOptions*
 
+
+\ifmczchem@color
 %\definecolor{DrakeBlue}{HTML}{12367C}
 %\definecolor{DrakeCompRed}{HTML}{982700}
 \definecolor{DrakeBlue}{HTML}{004477}
 %\definecolor{DrakeCompRed}{HTML}{552222}
 \definecolor{DrakeCompRed}{HTML}{880033}
+\else
+% uuuuugly lazy hack
+\definecolor{DrakeBlue}{HTML}{000000}
+\definecolor{DrakeCompRed}{HTML}{000000}
+\fi
 
 \ifmczchem@usefonts
 	%\RequirePackage[no-math]{fontspec}
@@ -133,14 +141,17 @@
 % Hyperlinks
 \PassOptionsToPackage{hyphens}{url}
 \RequirePackage{hyperref}
-%\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,breaklinks=true}
+%
 %\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=DrakeBlue,citecolor=DrakeBlue,urlcolor=DrakeBlue,breaklinks=true}
-\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=DrakeCompRed,citecolor=DrakeCompRed,urlcolor=DrakeCompRed,breaklinks=true}
+\@ifclassloaded{beamer}
+  {\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,breaklinks=true}}
+  {\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=DrakeCompRed,citecolor=DrakeCompRed,urlcolor=DrakeCompRed,breaklinks=true}}
+
 %\def\sectionautorefname{Section}
-\renewcommand\chapterautorefname{Chapter}
-\renewcommand\sectionautorefname{Section}
-\renewcommand\subsectionautorefname{\sectionautorefname}
-\renewcommand\subsubsectionautorefname{\sectionautorefname}
+\def\chapterautorefname{Chapter}
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{\sectionautorefname}
+\def\subsubsectionautorefname{\sectionautorefname}
 
 \newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{ISBN #1}}
 \newcommand{\fnhref}[2]{\href{#1}{#2}\footnote{\url{#1}}}
@@ -299,6 +310,9 @@
 \newcommand{\LBarMolK}{\ensuremath{\unit{L}\cdot\unit*{bar}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
 
 % Question formatting
+\@ifclassloaded{exam}%
+{\relax}%
+{%
 \newcounter{question}%[section]
 \newcommand{\@questionword}{Question}
 \newcommand{\questionlabel}{\stronghead{{\@questionword} \thequestion}}
@@ -327,8 +341,8 @@
 \questionplainnum
 
 \newcommand{\questionword}[1]{\renewcommand{\@questionword}{#1}}
-
-
+}
+\providecommand*{\questionautorefname}{Question}
 
 % Extensions to the exam class (exams, quizzes, printed surveys, etc)
 \@ifclassloaded{exam}
@@ -393,3 +407,14 @@
 	\newcommand{\cqleader}{—\ }
 	\newcommand{\citequote}[1]{\begin{flushright}\small\cqleader #1\end{flushright}}
 }
+
+% Gen chem beamer stuff, possibly useful elsewhere
+\newcommand{\TroCitation}{From Tro, \emph{Chemistry: Structure and Properties}}
+\newcommand{\DefaultIncludeGraphics}[1]{\includegraphics[width=\linewidth,height=0.8\textheight,keepaspectratio]{#1}}
+
+% Tests, quizzes, etc
+\newcommand\instnote[1]{\emph{(#1)}}
+\newcommand{\allabove}{\instnote{All of the above.}}
+\newcommand{\notabove}{\instnote{None of the above.}}
+\newcommand{\underblank}{\underline{\hspace{6em}}}
+
