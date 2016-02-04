@@ -11,7 +11,8 @@
 \DeclareBoolOption[true]{usefonts}
 \DeclareBoolOption[true]{microtype}
 \DeclareBoolOption[true]{fullpage}
-\DeclareBoolOption[true]{color}
+\DeclareBoolOption[false]{color}
+\DeclareBoolOption[false]{tuftesque}
 
 % General requirements
 \RequirePackage{amsmath}
@@ -26,6 +27,8 @@
 \RequirePackage{relsize}
 \RequirePackage{mathtools}
 \RequirePackage{chngcntr}
+\RequirePackage{booktabs}
+\RequirePackage{multicol}
 
 \ProcessKeyvalOptions*
 
@@ -45,13 +48,15 @@
 \ifmczchem@usefonts
 	%\RequirePackage[no-math]{fontspec}
     \RequirePackage{fontspec}
+    \directlua{fontspec = fontspec or {} fontspec.sprint = tex.sprint}
 	\defaultfontfeatures{Ligatures=TeX}
 
 	\setmainfont[ItalicFont=Minion Pro Italic,
 				 BoldFont=Minion Pro Bold,
-				 BoldItalicFont=Minion Pro Bold Italic]{Minion Pro Regular}
+				 BoldItalicFont=Minion Pro Bold]{Minion Pro Regular}
 	%\setmonofont[Scale=MatchLowercase]{Cousine}
-	\setmonofont[Scale=MatchLowercase]{Source Code Pro}
+    %\setmonofont[Scale=MatchLowercase]{Source Code Pro}
+    \setmonofont[Scale=0.925]{Consolas}
 	
 	\newfontfamily\rmdemifamily{Minion Pro Semibold}%
 	[ItalicFont=Minion Pro Semibold Italic,
@@ -88,9 +93,16 @@
 	\newfontface\subtitleface{Optima LT Std Medium}
 	}
 	
-	\usepackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
-    %\setmathfont[Scale=MatchLowercase]{Asana Math}
+	\RequirePackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
     \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
+    \setmathfont[range=\mathup/{num,latin,Latin,greek,Greek}]{Minion Pro} 
+    \setmathfont[range=\mathbfup/{num,latin,Latin,greek,Greek}]{MinionPro-Bold} 
+    \setmathfont[range=\mathit/{num,latin,Latin,greek,Greek}]{MinionPro-It} 
+    \setmathfont[range=\mathbfit/{num,latin,Latin,greek,Greek}]{MinionPro-BoldIt}
+    \setmathfont[range={"20D7},Scale=0.95]{Asana Math}
+    \setmathfont[range={"2113}]{MinionPro-It}
+    \setmathfont[range=\mathscr,Scale=MatchLowercase]{XITS Math}
+    \setmathfont[range=\mathcal,StylisticSet={1},Scale=MatchLowercase]{XITS Math}
 \else
 	\newcommand\rmdemifamily\bfseries
 	\newcommand\sfmediumfamily{\sffamily\mdseries}
@@ -103,13 +115,17 @@
 	\RequirePackage{microtype}
 \fi
 
+% Captions
+\@ifclassloaded{beamer}{\relax}{%
+  \ifmczchem@usefonts
+    \RequirePackage[labelfont={bf,sf},font=small]{caption}
+  \fi
+}
+
 \@ifclassloaded{beamer}
   {\relax}
   {\RequirePackage{multicol}
-   \ifmczchem@fullpage
-   	 \RequirePackage{fullpage}
-   \fi
-   \ifmczchem@usefonts
+  \ifmczchem@usefonts
 	\RequirePackage{tocloft}
 	\RequirePackage{titlesec}
 	\RequirePackage{titling}
@@ -128,14 +144,57 @@
 	\renewcommand{\cfttoctitlefont}{\Large\headfamily\bfseries\color{DrakeBlue}}
     \renewcommand{\cftloftitlefont}{\Large\headfamily\bfseries\color{DrakeBlue}}
     %\renewcommand{\cftfigfont}{\sfdemifamily}
-    \renewcommand{\cftfigfont}{\headfamily\bfseries\color{DrakeBlue}}
-    \renewcommand{\cftfigpagefont}{\headfamily\bfseries\color{DrakeBlue}}
+    \renewcommand{\cftfigfont}{\color{DrakeBlue}}
+    \renewcommand{\cftfigpagefont}{\color{DrakeBlue}}
 	%\renewcommand{\cftchapfont}{\headfamily\bfseries}
-	\renewcommand{\cftsecfont}{\headfamily\bfseries\color{DrakeBlue}}
-	\renewcommand{\cftsecpagefont}{\headfamily\bfseries\color{DrakeBlue}} 
+	\renewcommand{\cftsecfont}{\color{DrakeBlue}}
+	\renewcommand{\cftsecpagefont}{\color{DrakeBlue}}
+    \renewcommand{\cftsubsecfont}{\color{DrakeBlue}}
+    \renewcommand{\cftsubsecpagefont}{\color{DrakeBlue}}
+    \renewcommand{\cftsubsecleader}{\hfill}
+    \renewcommand{\cftsubsubsecfont}{\color{DrakeBlue}}
+    \renewcommand{\cftsubsubsecpagefont}{\color{DrakeBlue}}
+    \renewcommand{\cftsubsubsecleader}{\hfill}
 
    \fi
-   }
+
+   \ifmczchem@tuftesque
+     \linespread{1.0833333333}
+     \RequirePackage[letterpaper,%
+                     %twoside,%
+                     includehead,includefoot,%
+                     inner=0.875in,%
+                     top=0.875in,%
+                     bottom=0.875in,%
+                     headsep=2\baselineskip,%
+                     textwidth=26pc,%
+                     marginparsep=2pc,%
+                     marginparwidth=12pc,%
+                     %textheight=44\baselineskip,%
+                     headheight=\baselineskip%
+                     ]{geometry}
+     \RequirePackage{sidenotes}
+     \RequirePackage{marginfix}
+     \DeclareCaptionStyle{margintable}{labelfont={bf,sf},font=small}
+     \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small}
+     \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
+     \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
+     \renewcommand{\cftfigfont}{\headfamily\bfseries\color{DrakeBlue}}
+     \renewcommand{\cftfigpagefont}{\headfamily\bfseries\color{DrakeBlue}}
+     \setlength{\cftbeforesecskip}{0.5ex}
+     \setlength{\cftbeforesubsecskip}{0ex}
+	 \titleformat*{\section}{\large\headfamily\bfseries\color{DrakeBlue}}
+  	 \titleformat*{\subsection}{\headfamily\bfseries\color{DrakeBlue}}
+	 \titleformat*{\subsubsection}{\headfamily\color{DrakeBlue}}
+     \newcommand{\marginparskip}{\vspace{1.8pc plus 0.5pc minus 0.5pc}}
+     \RequirePackage{environ}
+     \NewEnviron{scaletomargin}{\resizebox{\marginparwidth}{!}{\BODY}}
+   \else
+     \ifmczchem@fullpage
+   	   \RequirePackage{fullpage}
+     \fi
+   \fi
+}
 
 
 % Hyperlinks
@@ -155,16 +214,17 @@
 
 \newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{ISBN #1}}
 \newcommand{\fnhref}[2]{\href{#1}{#2}\footnote{\url{#1}}}
+\newcommand{\mailto}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
 
 % Citations
-\RequirePackage[numbers,comma,super,sort&compress]{natbib}
-\RequirePackage{natmove}
+\@ifclassloaded{tufte-handout}{\relax}{%
+  \RequirePackage[numbers,comma,super,sort&compress]{natbib}
+  \RequirePackage{natmove}
+}
 \DeclareRobustCommand\onlinecite{\@onlinecite}
 \def\@onlinecite#1{\begingroup\let\@cite\NAT@citenum\citealp{#1}\endgroup}
 \newcommand{\doilink}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
 
-% Captions
-\RequirePackage[labelfont={bf},font=small]{caption}
 
 % Formatting
 \newcommand{\acro}[1]{\textsc{\expandafter\MakeLowercase\expandafter{#1}}}
@@ -179,8 +239,8 @@
   {%\RequirePackage{enumitem}
    %\newcommand{\enumitem}[1]{\stronghead{#1}}
    %\setlist[enumerate]{label=\enumitem{\arabic*.}}
-	\renewcommand{\labelenumi}{\stronghead{\arabic{enumi}.}}
-	\renewcommand{\labelenumii}{\stronghead{(\alph{enumii})}}
+	\renewcommand{\labelenumi}{{\sfdemifamily\arabic{enumi}.}}
+	\renewcommand{\labelenumii}{{\sfdemifamily{(\alph{enumii})}}}
    \renewcommand{\labelitemii}{\rule[0.5ex]{0.55ex}{0.55ex}}
   }
 \renewcommand{\arraystretch}{1.2}
@@ -195,10 +255,10 @@
 \renewcommand{\ij}{{i\mkern-5mu j}}
 \newcommand{\ii}{{i\mkern-3mu i}}
 \newcommand{\ji}{{j\mkern-3mu i}}
-\let\@oldvec\vec
-\ifmczchem@usefonts
-	\renewcommand{\vec}[1]{\mkern2mu\overrightarrow{\mkern-2mu#1}}
-\fi
+%\let\@oldvec\vec
+%\ifmczchem@usefonts
+%	\renewcommand{\vec}[1]{\overrightarrow{\mkern-3mu#1}}
+%\fi
 \newcommand{\mat}[1]{\mathbfup{#1}}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\Complex}{\mathbb{C}}
@@ -220,8 +280,11 @@
 % Nicer than \begin.\end.
 \newcommand{\avg}[1]{\ensuremath{\left<#1\right>}}
 \newcommand{\parens}[1]{\ensuremath{\left(#1\right)}}
+\newcommand{\fnparens}[1]{\ensuremath{\mkern -3mu \left(#1\right)}}
+\newcommand{\of}{\fnparens}
 \newcommand{\sqbrackets}[1]{\ensuremath{\left[#1\right]}}
 \newcommand{\magn}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\curlybrackets}[1]{\ensuremath{\left\{#1\right\}}}
 
 % Scientific nomenclature and formatting
 \newcommand{\degrees}{\ensuremath{^\circ}}
@@ -296,7 +359,7 @@
 \newcommand\unit[1]{\ensuremath{\;\text{#1}}}
 \WithSuffix\newcommand\unit*[1]{\ensuremath{\text{#1}}}
 % \munit(*) uses mathrm and does support math in its argument
-\newcommand\munit[1]{\ensuremath{\;\mathrm{#1}}}
+\newcommand\munit[1]{\ensuremath{\ \mathrm{#1}}}
 \WithSuffix\newcommand\munit*[1]{\ensuremath{\mathrm{#1}}}
 \newcommand{\degC}{\unit{°C}}
 \WithSuffix\newcommand\degC*{\unit*{°C}}
@@ -330,7 +393,7 @@
 	\ifstrempty{#1}%
     	{}%
     	{\hfill\pointlabel{#1}}%	
-	\nopagebreak\par\noindent\ignorespaces%
+	\par\noindent\ignorespaces%
 }
 
 %\newcommand{\questionsecnum}{\renewcommand{\thequestion}{\thesection.\arabic{question}}}
@@ -389,7 +452,7 @@
 
 \newcommand{\footlineextra}[1]{
     \begin{tikzpicture}[remember picture,overlay]
-        \node[yshift=1ex,anchor=south west] at (current page.south west) {\usebeamerfont{author in head/foot}\hspace{2ex}#1};
+        \node[xshift=-1ex,anchor=south west] at (current page.south west) {\usebeamerfont{author in head/foot}\hspace{2ex}#1};
     \end{tikzpicture}
 }
 
@@ -417,4 +480,9 @@
 \newcommand{\allabove}{\instnote{All of the above.}}
 \newcommand{\notabove}{\instnote{None of the above.}}
 \newcommand{\underblank}{\underline{\hspace{6em}}}
+
+\DeclareGraphicsRule{.ai}{pdf}{.ai}{}
+
+
+
 
