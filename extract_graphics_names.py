@@ -2,7 +2,7 @@
 
 import sys, re
 
-extensions = ['png','jpg','jpeg','pdf']
+extensions = ['png','jpg','jpeg','pdf','ai']
 regexps = [re.compile(r'\{\s*([^\{]+?.%s)\s*\}' % extension) for extension in extensions]
 
 try:
