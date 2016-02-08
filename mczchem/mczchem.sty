@@ -99,10 +99,17 @@
     \setmathfont[range=\mathbfup/{num,latin,Latin,greek,Greek}]{MinionPro-Bold} 
     \setmathfont[range=\mathit/{num,latin,Latin,greek,Greek}]{MinionPro-It} 
     \setmathfont[range=\mathbfit/{num,latin,Latin,greek,Greek}]{MinionPro-BoldIt}
-    \setmathfont[range={"20D7},Scale=0.95]{Asana Math}
-    \setmathfont[range={"2113}]{MinionPro-It}
+    \setmathfont[range=\mathsfup/{num,latin,Latin,greek,Greek}]{Myriad Pro}
+    \setmathfont[range=\mathsfit/{num,latin,Latin,greek,Greek}]{MyriadPro-It}
+    \setmathfont[range=\mathbfsfup/{num,latin,Latin,greek,Greek}]{MyriadPro-Bold}
+    \setmathfont[range=\mathbfsfit/{num,latin,Latin,greek,Greek}]{MyriadPro-BoldIt}
+    \setmathfont[range={"20D7},Scale=0.80]{Asana Math} % nice long vector arrow
+    \setmathfont[range={"2113}]{MinionPro-It} % force italic ell
     \setmathfont[range=\mathscr,Scale=MatchLowercase]{XITS Math}
     \setmathfont[range=\mathcal,StylisticSet={1},Scale=MatchLowercase]{XITS Math}
+
+    \setmathfontface\mathitpagella{texgyrepagella-italic.otf}[Scale=MatchLowercase]
+
 \else
 	\newcommand\rmdemifamily\bfseries
 	\newcommand\sfmediumfamily{\sffamily\mdseries}
@@ -159,7 +166,8 @@
    \fi
 
    \ifmczchem@tuftesque
-     \linespread{1.0833333333}
+     %\linespread{1.0833333333}
+     %\linespread{1.1666666666}
      \RequirePackage[letterpaper,%
                      %twoside,%
                      includehead,includefoot,%
@@ -173,10 +181,20 @@
                      %textheight=44\baselineskip,%
                      headheight=\baselineskip%
                      ]{geometry}
+     \newcommand{\marginparspread}{1.0}
+     \newcommand{\marginfont}{\small}
      \RequirePackage{sidenotes}
      \RequirePackage{marginfix}
+     \setlength{\marginposadjustment}{-\baselineskip}     
+     \RequirePackage{titling}
+     \RequirePackage{setspace}
+     %\setstretch{1.16666666666}
+     \setstretch{1.125} % halfway between 1.083 which is too little and 1.16 which is too much
+     \setlength{\droptitle}{-9ex}
+     
      \DeclareCaptionStyle{margintable}{labelfont={bf,sf},font=small}
      \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small}
+     \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small}
      \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
      \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
      \renewcommand{\cftfigfont}{\headfamily\bfseries\color{DrakeBlue}}
@@ -187,8 +205,19 @@
   	 \titleformat*{\subsection}{\headfamily\bfseries\color{DrakeBlue}}
 	 \titleformat*{\subsubsection}{\headfamily\color{DrakeBlue}}
      \newcommand{\marginparskip}{\vspace{1.8pc plus 0.5pc minus 0.5pc}}
+     \newcommand{\marginsmall}{\small\linespread{\marginparspread}}
      \RequirePackage{environ}
      \NewEnviron{scaletomargin}{\resizebox{\marginparwidth}{!}{\BODY}}
+     \NewEnviron{mfigure}{\begin{marginfigure}%
+         \marginfont\setstretch{\marginparspread}\centering%
+         \BODY%
+         \marginparskip\end{marginfigure}}
+     \NewEnviron{mtable}{\begin{margintable}%
+         \marginfont\setstretch{\marginparspread}\centering%
+         \BODY%
+         \marginparskip\end{margintable}}
+     \NewEnviron{mpar}{\marginpar{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
+     \NewEnviron{snote}{\sidenote{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
    \else
      \ifmczchem@fullpage
    	   \RequirePackage{fullpage}
@@ -249,16 +278,21 @@
 \newtagform{stronghead}[\stronghead]{\stronghead{(}}{\stronghead{)}}\usetagform{stronghead}
 
 \newcommand{\about}{\ensuremath{\sim}}
+\newcommand{\vv}{\mathitpagella{v}}
 \renewcommand{\d}{d\!}
 \newcommand{\subword}[1]{_{\text{\normalfont #1}}}
 \newcommand{\supword}[1]{^{\text{\normalfont #1}}}
 \renewcommand{\ij}{{i\mkern-5mu j}}
 \newcommand{\ii}{{i\mkern-3mu i}}
 \newcommand{\ji}{{j\mkern-3mu i}}
-%\let\@oldvec\vec
-%\ifmczchem@usefonts
-%	\renewcommand{\vec}[1]{\overrightarrow{\mkern-3mu#1}}
-%\fi
+\let\@oldvec\vec
+\let\@oldell\ell
+\ifmczchem@usefonts
+  \renewcommand{\vec}[1]{\mkern-1mu\skew{2}{\@oldvec}{#1}\mkern1mu}
+  \renewcommand{\ell}{\@oldell\mkern-3mu}
+\fi
+\newcommand{\uvec}[1]{\@oldvec{#1}}
+
 \newcommand{\mat}[1]{\mathbfup{#1}}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\Complex}{\mathbb{C}}
@@ -389,7 +423,7 @@
 %\leavevmode\unskip foo\ignorespaces
 \DeclareDocumentCommand{\question}{ O{} }{%
 	\refstepcounter{question}%
-	\par\vspace{1.5ex}\noindent\questionlabel.%
+	\par\vspace{2ex plus 0.5 ex minus 0.5ex}\noindent\questionlabel%
 	\ifstrempty{#1}%
     	{}%
     	{\hfill\pointlabel{#1}}%	
