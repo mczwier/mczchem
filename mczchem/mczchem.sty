@@ -47,13 +47,39 @@
 
 \ifmczchem@usefonts
 	%\RequirePackage[no-math]{fontspec}
-    \RequirePackage{fontspec}
+    \RequirePackage[no-math]{fontspec}
     \directlua{fontspec = fontspec or {} fontspec.sprint = tex.sprint}
 	\defaultfontfeatures{Ligatures=TeX}
+	
+	\RequirePackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
+    \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
+    %\setmathfont{MinionPro}
+    %\setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
+    \setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
+    \setmathfont[range=bfup/{num,latin,Latin,greek,Greek}]{Minion Pro Bold}
+    \setmathfont[range=it/{num,latin,Latin,greek,Greek}]{Minion Pro Italic} 
+    \setmathfont[range=bfit/{num,latin,Latin,greek,Greek}]{Minion Pro Bold Italic}
+    \@ifclassloaded{beamer}
+      {\relax}
+      {
+        \setmathfont[range=sfup/{num,latin,Latin,greek,Greek}]{Myriad Pro Regular}
+        \setmathfont[range=sfit/{num,latin,Latin,greek,Greek}]{Myriad Pro Italic}
+        \setmathfont[range=bfsfup/{num,latin,Latin,greek,Greek}]{Myriad Pro Bold}
+        \setmathfont[range=bfsfit/{num,latin,Latin,greek,Greek}]{Myriad Pro Bold Italic}
+      }  
+    \setmathfont[range={"20D7},Scale=0.80]{Asana Math} % nice long vector arrow
+    \setmathfont[range={"2113}]{MinionPro-It} % force italic ell
+    \setmathfont[range=\mathscr,Scale=MatchLowercase]{XITS Math}
+    \setmathfont[range=\mathcal,StylisticSet={1},Scale=MatchLowercase]{XITS Math}
+    \setmathrm{Minion Pro}
+    \setmathsf{Myriad Pro}
+    \setmathtt{Consolas}
+
+    \setmathfontface\mathitpagella{texgyrepagella-italic.otf}[Scale=MatchLowercase]
 
 	\setmainfont[ItalicFont=Minion Pro Italic,
 				 BoldFont=Minion Pro Bold,
-				 BoldItalicFont=Minion Pro Bold]{Minion Pro Regular}
+				 BoldItalicFont=Minion Pro Bold Italic]{Minion Pro Regular}
 	%\setmonofont[Scale=MatchLowercase]{Cousine}
     %\setmonofont[Scale=MatchLowercase]{Source Code Pro}
     \setmonofont[Scale=0.925]{Consolas}
@@ -92,23 +118,6 @@
    	  BoldItalicFont=Optima LT Std Bold Italic]{Optima LT Std Roman}
 	\newfontface\subtitleface{Optima LT Std Medium}
 	}
-	
-	\RequirePackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
-    \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
-    \setmathfont[range=\mathup/{num,latin,Latin,greek,Greek}]{Minion Pro} 
-    \setmathfont[range=\mathbfup/{num,latin,Latin,greek,Greek}]{MinionPro-Bold} 
-    \setmathfont[range=\mathit/{num,latin,Latin,greek,Greek}]{MinionPro-It} 
-    \setmathfont[range=\mathbfit/{num,latin,Latin,greek,Greek}]{MinionPro-BoldIt}
-    \setmathfont[range=\mathsfup/{num,latin,Latin,greek,Greek}]{Myriad Pro}
-    \setmathfont[range=\mathsfit/{num,latin,Latin,greek,Greek}]{MyriadPro-It}
-    \setmathfont[range=\mathbfsfup/{num,latin,Latin,greek,Greek}]{MyriadPro-Bold}
-    \setmathfont[range=\mathbfsfit/{num,latin,Latin,greek,Greek}]{MyriadPro-BoldIt}
-    \setmathfont[range={"20D7},Scale=0.80]{Asana Math} % nice long vector arrow
-    \setmathfont[range={"2113}]{MinionPro-It} % force italic ell
-    \setmathfont[range=\mathscr,Scale=MatchLowercase]{XITS Math}
-    \setmathfont[range=\mathcal,StylisticSet={1},Scale=MatchLowercase]{XITS Math}
-
-    \setmathfontface\mathitpagella{texgyrepagella-italic.otf}[Scale=MatchLowercase]
 
 \else
 	\newcommand\rmdemifamily\bfseries
@@ -154,9 +163,10 @@
     \renewcommand{\cftfigfont}{\color{DrakeBlue}}
     \renewcommand{\cftfigpagefont}{\color{DrakeBlue}}
 	%\renewcommand{\cftchapfont}{\headfamily\bfseries}
-	\renewcommand{\cftsecfont}{\sfdemifamily\color{DrakeBlue}}
-	\renewcommand{\cftsecpagefont}{\sfdemifamily\color{DrakeBlue}}
-    \renewcommand{\cftsubsecfont}{\sfmediumfamily\color{DrakeBlue}}
+	\renewcommand{\cftsecfont}{\sffamily\bfseries\color{DrakeBlue}}
+	\renewcommand{\cftsecpagefont}{\sffamily\bfseries\color{DrakeBlue}}
+    \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+    \renewcommand{\cftsubsecfont}{\sfdemifamily\color{DrakeBlue}}
     \renewcommand{\cftsubsecpagefont}{\sfdemifamily\color{DrakeBlue}}
     \renewcommand{\cftsubsecleader}{\hfill}
     \renewcommand{\cftsubsubsecfont}{\sfmediumfamily\color{DrakeBlue}}
@@ -188,13 +198,13 @@
      \setlength{\marginposadjustment}{-\baselineskip}     
      \RequirePackage{titling}
      \RequirePackage{setspace}
-     %\setstretch{1.16666666666}
-     \setstretch{1.125} % halfway between 1.083 which is too little and 1.16 which is too much
+     \setstretch{1.16666666666}
+     %\setstretch{1.125} % halfway between 1.083 which is too little and 1.16 which is too much
      \setlength{\droptitle}{-9ex}
      
-     \DeclareCaptionStyle{margintable}{labelfont={bf,sf},font=small}
-     \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small}
-     \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small}
+     \DeclareCaptionStyle{margintable}{labelfont={bf,sf},font=small,skip=0.5ex}
+     \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small,skip=0.5ex}
+     \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small,skip=0pt}
      \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
      \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
      \renewcommand{\cftfigfont}{\headfamily\bfseries\color{DrakeBlue}}
@@ -218,6 +228,7 @@
          \marginparskip\end{margintable}}
      \NewEnviron{mpar}{\marginpar{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
      \NewEnviron{snote}{\sidenote{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
+     \newcommand{\mnote}[1]{\sidenote{\marginfont\setstretch{\marginparspread}#1\marginparskip}}
    \else
      \ifmczchem@fullpage
    	   \RequirePackage{fullpage}
@@ -279,7 +290,7 @@
 
 \newcommand{\about}{\ensuremath{\sim}}
 \newcommand{\vv}{\mathitpagella{v}}
-\renewcommand{\d}{d\!}
+%\renewcommand{\d}{d\!} % conflicts with dot accent...maybe a better way to do this
 \newcommand{\subword}[1]{_{\text{\normalfont #1}}}
 \newcommand{\supword}[1]{^{\text{\normalfont #1}}}
 \renewcommand{\ij}{{i\mkern-5mu j}}
@@ -328,10 +339,6 @@
 % \SN{1}, \SN{2}
 \newcommand{\SN}[1]{\ensuremath{\text{S}_\text{N}#1}}
 
-%\newcommand{\Gas}{\ce{{(g)}}}
-%\newcommand{\Aq}{\ce{{(aq)}}}
-%\newcommand{\Liquid}{\ce{{(\ell)}}}
-%\newcommand{\Solid}{\ce{{(s)}}}
 \newcommand{\cephase}[1]{\text{{\emph{(#1)}}}}
 \newcommand{\Gas}{\cephase{g}}
 \newcommand{\Liquid}{\cephase{ℓ}}
@@ -393,8 +400,8 @@
 \newcommand\unit[1]{\ensuremath{\;\text{#1}}}
 \WithSuffix\newcommand\unit*[1]{\ensuremath{\text{#1}}}
 % \munit(*) uses mathrm and does support math in its argument
-\newcommand\munit[1]{\ensuremath{\ \mathrm{#1}}}
-\WithSuffix\newcommand\munit*[1]{\ensuremath{\mathrm{#1}}}
+\newcommand\munit[1]{\ \mathup{#1}}
+\WithSuffix\newcommand\munit*[1]{\mathup{#1}}
 \newcommand{\degC}{\unit{°C}}
 \WithSuffix\newcommand\degC*{\unit*{°C}}
 %\newcommand{\Angstrom}{\mbox{\AA}}
@@ -515,6 +522,8 @@
 \newcommand{\notabove}{\instnote{None of the above.}}
 \newcommand{\underblank}{\underline{\hspace{6em}}}
 
+% Graphics file naming
+\RequirePackage{grffile}
 \DeclareGraphicsRule{.ai}{pdf}{.ai}{}
 
 
