@@ -7,7 +7,7 @@ if [ -d $(dirname $TMFROOT) ] ; then
 fi
 
 for d in *; do
-    if ! [ -d $d ] ; then continue ; fi
+    if ! [ -d "$d" ] ; then continue ; fi
     ln -svf $PWD/$d $TMFROOT/tex/latex
 done
 
