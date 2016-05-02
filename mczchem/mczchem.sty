@@ -19,7 +19,7 @@
 \RequirePackage{amsthm}
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
-\RequirePackage[version=3,arrows=pgf]{mhchem}
+\RequirePackage[version=4,arrows=pgf,textminus=–]{mhchem}
 \RequirePackage{tabulary}
 \RequirePackage{xparse}
 \RequirePackage{suffix}
@@ -53,6 +53,7 @@
 	\defaultfontfeatures{Ligatures=TeX}
 	
 	\RequirePackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
+    %\delimitershortfall=0pt
     \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
     %\setmathfont{MinionPro}
     %\setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
@@ -229,6 +230,7 @@
      \DeclareCaptionStyle{margintable}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small,skip=0pt}
+     \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small}
      \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
      \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
      \renewcommand{\cftfigfont}{\headfamily\bfseries\color{DrakeBlue}}
@@ -297,13 +299,14 @@
 \def\@onlinecite#1{\begingroup\let\@cite\NAT@citenum\citealp{#1}\endgroup}
 \newcommand{\doilink}[1]{\href{http://dx.doi.org/#1}{doi:#1}}
 
-
 % Formatting
 \newcommand{\acro}[1]{\textsc{\expandafter\MakeLowercase\expandafter{#1}}}
 \newcommand{\strong}[1]{\textbf{#1}}
 \newcommand{\stronghead}[1]{\textbf{\headfamily #1}}
 \newcommand{\thead}[1]{\stronghead{#1}}
 \newcommand{\filename}[1]{\nolinkurl{#1}}
+\newcommand{\hostname}[1]{\nolinkurl{#1}}
+\newcommand{\choice}[1]{“#1”}
 
 % List formatting
 \@ifclassloaded{beamer}
@@ -324,6 +327,7 @@
 %\newcommand{\vv}{\mathitpagella{v}}
 %\newcommand{\vv}{\mathfullcal{v}}
 \newcommand{\vv}{\mathcal{v}}
+\newcommand{\rr}{\mathcal{r}}
 \newcommand{\MM}{\mathcal{M}\mkern-2.5mu}
 %\renewcommand{\d}{d\!} % conflicts with dot accent...maybe a better way to do this
 %\newcommand{\subword}[1]{_{\text{\normalfont #1}}}
@@ -358,6 +362,13 @@
 \newcommand{\zunit}{\ensuremath{\mkern2mu \vec{\textbf{k}} \mkern2mu}}
 \DeclareMathOperator{\erfc}{erfc}
 
+% uses text font, not math font, but whatever
+\newcommand{\unifrac}[2]{\mbox{% making sure we don't get a line break
+    {\addfontfeatures{RawFeature=+numr}#1}%
+    ⁄% That slash is U+2044 FRACTION SLASH, which has special spacing
+    {\addfontfeatures{RawFeature=+dnom}#2}%
+    }}
+\newcommand{\onehalf}{\unifrac{1}{2}}
 
 % Nicer than \begin.\end.
 \newcommand{\avg}[1]{\ensuremath{\left<#1\right>}}
@@ -391,41 +402,41 @@
 \newcommand{\Voltage}{\ensuremath{\mathcal{V}}}
 
 %  pH, pOH, pKa, pKb, etc
-\newcommand{\p}{\ensuremath{\text{p}}}
-\newcommand{\Kw}{\ensuremath{K_\mathrm{w}}}
+\newcommand{\p}{\ensuremath{\mathup{p}}}
+\newcommand{\Kw}{\ensuremath{K_\mathup{w}}}
 \newcommand{\pKw}{\ensuremath{\p \Kw}}
-\newcommand{\pH}{\ensuremath{\text{pH}}}
-\newcommand{\pOH}{\ensuremath{\text{pOH}}}
+\newcommand{\pH}{\ensuremath{\mathup{pH}}}
+\newcommand{\pOH}{\ensuremath{\mathup{pOH}}}
 
 \newcommand\Ka[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{K_\mathrm{a}}%
+    \ensuremath{K_\mathup{a}}%
   }{%
-    \ensuremath{K_{\mathrm{a}_{#1}}}%
+    \ensuremath{K_{\mathup{a}_{#1}}}%
   }%
 }
 
 \newcommand\pKa[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{\mathrm{p}K_\mathrm{a}}%
+    \ensuremath{\mathup{p}K_\mathup{a}}%
   }{%
-    \ensuremath{\mathrm{p}K_{\mathrm{a}_{#1}}}%
+    \ensuremath{\mathup{p}K_{\mathup{a}_{#1}}}%
   }%
 }
 
 \newcommand\Kb[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{K_\mathrm{b}}%
+    \ensuremath{K_\mathup{b}}%
   }{%
-    \ensuremath{K_{\mathrm{b}_{#1}}}%
+    \ensuremath{K_{\mathup{b}_{#1}}}%
   }%
 }
 
 \newcommand\pKb[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{\mathrm{p}K_\mathrm{b}}%
+    \ensuremath{\mathrm{p}K_\mathup{b}}%
   }{%
-    \ensuremath{\mathrm{p}K_{\mathrm{b}_{#1}}}%
+    \ensuremath{\mathrm{p}K_{\mathup{b}_{#1}}}%
   }%
 }
 
@@ -473,7 +484,7 @@
 %\leavevmode\unskip foo\ignorespaces
 \RequirePackage{noindentafter}
 \newcommand{\qpreskip}{2ex plus 0.5ex minus 0.5ex}
-\newcommand{\qpostskip}{0.75ex plus 0.5ex minus 0.25ex}
+\newcommand{\qpostskip}{0.25ex plus 0.125ex minus 0.25ex}
 \DeclareDocumentCommand{\question}{O{}}{%
 	\refstepcounter{question}%
 	\vskip \qpreskip \noindent \questionlabel%
@@ -544,7 +555,7 @@
 }
 
 % Citation notes: plain, left-justified, centered, right-justified
-\newcommand{\citenote}[1]{\itshape\scriptsize#1}
+\newcommand{\citenote}[1]{\scriptsize\emph{#1}}
 \newcommand{\citenotel}[1]{\raggedright\citenote{#1}}
 \newcommand{\citenotec}[1]{\centering\citenote{#1}}
 \newcommand{\citenoter}[1]{\raggedleft\citenote{#1}}
@@ -560,7 +571,12 @@
 
 % Gen chem beamer stuff, possibly useful elsewhere
 \newcommand{\TroCitation}{From Tro, \emph{Chemistry: Structure and Properties}}
+\newcommand{\JespersenCite}{From Jespersen, \emph{Chemistry: The Molecular Nature of Matter}, 6th ed.}
+\newcommand{\PrincGenChemCite}{From Averill and Eldredge, \href{http://2012books.lardbucket.org/books/principles-of-general-chemistry-v1.0/}{\emph{Chemistry: Principles, Patterns, and Applications}}}
 \newcommand{\DefaultIncludeGraphics}[1]{\includegraphics[width=\linewidth,height=0.8\textheight,keepaspectratio]{#1}}
+\newcommand{\greektext}[1]{\emph{\textrm{#1}}}
+\newcommand{\wikilink}[2]{From Wikipedia, \href{#2}{(“#1”)}}
+
 
 % Tests, quizzes, etc
 \newcommand\instnote[1]{\emph{(#1)}}
