@@ -60,8 +60,8 @@
     \setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
     %\setmathfont[range={"00C5}]{Minion Pro Regular}
     \setmathfont[range=bfup/{num,latin,Latin,greek,Greek}]{Minion Pro Bold}
-    \setmathfont[range=it/{num,latin,Latin,greek,Greek}]{Minion Pro Italic} 
-    \setmathfont[range=bfit/{num,latin,Latin,greek,Greek}]{Minion Pro Bold Italic}
+    \setmathfont[range=it/{num,latin,Latin,greek,Greek}]{MinionPro-It}
+    \setmathfont[range=bfit/{num,latin,Latin,greek,Greek}]{MinionPro-BoldIt}
     % \@ifclassloaded{beamer}
     %   {\relax}
     %   {
@@ -86,17 +86,17 @@
     \setmathfontface\mathfullcal{Tex Gyre Chorus}[Scale=MatchLowercase]
     \renewcommand{\mathcal}[1]{\mathfullcal{#1}}
 
-	\setmainfont[ItalicFont=Minion Pro Italic,
+	\setmainfont[ItalicFont=MinionPro-It,
 				 BoldFont=Minion Pro Bold,
-				 BoldItalicFont=Minion Pro Bold Italic]{Minion Pro Regular}
+				 BoldItalicFont=MinionPro-BoldIt]{Minion Pro Regular}
 	%\setmonofont[Scale=MatchLowercase]{Cousine}
     %\setmonofont[Scale=MatchLowercase]{Source Code Pro}
     \setmonofont[Scale=0.925]{Consolas}
 	
 	\newfontfamily\rmdemifamily{Minion Pro Semibold}%
-	[ItalicFont=Minion Pro Semibold Italic,
+	[ItalicFont=MinionPro-SemiboldIt,
      BoldFont=Minion Pro Bold,
-     BoldItalicFont=Minion Pro Bold Italic,
+     BoldItalicFont=MinionPro-BoldIt,
      Scale=MatchLowercase]
 	 
 	\newfontfamily\sfmediumfamily{Optima LT Std Medium}%
@@ -105,10 +105,10 @@
 	BoldItalicFont=Optima LT Std Black Italic,
     Scale=MatchLowercase]
 	
-	\newfontfamily\sfdemifamily{Optima LT Std Demi}%
-	[ItalicFont=Optima LT Std Demi Italic,
+	\newfontfamily\sfdemifamily{Optima LT Std Demibold}%
+	[ItalicFont=Optima LT Std Demibold Italic,
 	BoldFont=Optima LT Std Extra Black,
-	BoldItalicFont=Optima LT Std Extra Black Italic,
+	BoldItalicFont=OptimaLTStd-XBlackItalic,
     Scale=MatchLowercase]
 	
 	\@ifclassloaded{beamer}{
@@ -116,15 +116,15 @@
  	[ Scale=MatchLowercase,
 	  ItalicFont=Optima LT Std Italic,
    	  BoldFont=Optima LT Std Demi,
-   	  BoldItalicFont=Optima LT Std Demi Italic]{Optima LT Std Roman}
-	  \newfontface\subtitleface{Optima LT Std Demi}
+   	  BoldItalicFont=Optima LT Std Demi Italic]{Optima LT Std}
+	  \newfontface\subtitleface{Optima LT Std Demibold}
 	  %\usepackage{mathpazo}
 	  
 	}{\setsansfont%
  	[ Scale=MatchLowercase,
 	  ItalicFont=Optima LT Std Italic,
    	  BoldFont=Optima LT Std Bold,
-   	  BoldItalicFont=Optima LT Std Bold Italic]{Optima LT Std Roman}
+   	  BoldItalicFont=Optima LT Std Bold Italic]{Optima LT Std}
 	\newfontface\subtitleface{Optima LT Std Medium}
 	}
 
@@ -407,6 +407,8 @@
 \newcommand{\pKw}{\ensuremath{\p \Kw}}
 \newcommand{\pH}{\ensuremath{\mathup{pH}}}
 \newcommand{\pOH}{\ensuremath{\mathup{pOH}}}
+
+\newcommand{\Ksp}{\ensuremath{K_\mathup{sp}}}
 
 \newcommand\Ka[1][]{%
   \ifstrempty{#1}{%
