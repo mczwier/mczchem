@@ -13,6 +13,8 @@
 \DeclareBoolOption[true]{fullpage}
 \DeclareBoolOption[false]{color}
 \DeclareBoolOption[false]{tuftesque}
+\DeclareBoolOption[true]{twoside}
+\DeclareComplementaryOption{oneside}{twoside}
 
 % General requirements
 \RequirePackage{amsmath}
@@ -49,7 +51,7 @@
 \ifmczchem@usefonts
 	%\RequirePackage[no-math]{fontspec}
     \RequirePackage[no-math]{fontspec}
-    \directlua{fontspec = fontspec or {} fontspec.sprint = tex.sprint}
+    %\directlua{fontspec = fontspec or {} fontspec.sprint = tex.sprint}
 	\defaultfontfeatures{Ligatures=TeX}
 	
 	\RequirePackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
@@ -69,8 +71,10 @@
     %     \setmathfont[range=sfit/{num,latin,Latin,greek,Greek}]{Myriad Pro Italic}
     %     \setmathfont[range=bfsfup/{num,latin,Latin,greek,Greek}]{Myriad Pro Bold}
     %     \setmathfont[range=bfsfit/{num,latin,Latin,greek,Greek}]{Myriad Pro Bold Italic}
-    %   }  
-    \setmathfont[range={"20D7},Scale=0.80]{Asana Math} % nice long vector arrow
+    %   }
+    %\setmathfont[range={"0111}]{Asana Math}
+    \setmathfont[range={"20D7},Scale=0.9]{Asana Math} % nice long vector arrow
+    \setmathfont[range={"305}]{Asana Math} % overbar
     \setmathfont[range={"2113}]{MinionPro-It} % force italic ell
     \setmathfont[range=scr,Scale=MatchLowercase]{XITS Math}
     %\setmathfont[range=cal,StylisticSet={1},Scale=MatchLowercase]{XITS Math} %too thick
@@ -89,7 +93,7 @@
 	\setmainfont[ItalicFont=MinionPro-It,
 				 BoldFont=Minion Pro Bold,
 				 BoldItalicFont=MinionPro-BoldIt]{Minion Pro Regular}
-	%\setmonofont[Scale=MatchLowercase]{Cousine}
+ 	%\setmonofont[Scale=MatchLowercase]{Cousine}
     %\setmonofont[Scale=MatchLowercase]{Source Code Pro}
     \setmonofont[Scale=0.925]{Consolas}
 	
@@ -115,8 +119,8 @@
 	\setsansfont%
  	[ Scale=MatchLowercase,
 	  ItalicFont=Optima LT Std Italic,
-   	  BoldFont=Optima LT Std Demi,
-   	  BoldItalicFont=Optima LT Std Demi Italic]{Optima LT Std}
+   	  BoldFont=OptimaLTStd-DemiBold,
+   	  BoldItalicFont=OptimaLTStd-DemiBold-Italic]{Optima LT Std}
 	  \newfontface\subtitleface{Optima LT Std Demibold}
 	  %\usepackage{mathpazo}
 	  
@@ -197,6 +201,7 @@
      %\linespread{1.1666666666}
      \RequirePackage[letterpaper,%
                      %twoside,%
+                     %asymmetric,%
                      includehead,includefoot,%
                      inner=0.875in,%
                      top=0.875in,%
@@ -208,10 +213,16 @@
                      %textheight=44\baselineskip,%
                      headheight=\baselineskip%
                      ]{geometry}
-     %\RequirePackage{changepage}
+     \ifmczchem@twoside
+       \geometry{twoside}
+       \RequirePackage{sidenotes}
+     \else
+       \geometry{asymmetric}
+       \RequirePackage[oneside]{sidenotes}
+     \fi
+
      \newcommand{\marginparspread}{1.0}
-     \newcommand{\marginfont}{\small}
-     \RequirePackage{sidenotes}
+     \renewcommand{\marginfont}{\small}
      \RequirePackage{marginfix}
      \setlength{\marginposadjustment}{-\baselineskip}
      \renewcommand{\marginnotevadjust}{-\baselineskip}
@@ -255,19 +266,47 @@
      \NewEnviron{mpar}{\marginpar{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
      \NewEnviron{snote}{\sidenote{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
      \newcommand{\mnote}[1]{\sidenote{\marginfont\setstretch{\marginparspread}#1\marginparskip}}
-     
+     %\NewEnviron{meqn}{\begin{mpar}\begin{equation}\BODY\end{equation}\end{mpar}}
+       
      \newenvironment{fullwidth}{%
-       \begin{adjustwidth}{0in}{-14pc}
+       \begin{adjustwidth*}{0in}{-14pc}
      }{%
-       \end{adjustwidth}
+       \end{adjustwidth*}
      }
      
+     \renewcommand{\thesidenote}{{\sfdemifamily\alph{sidenote}}}
      
    \else
      \ifmczchem@fullpage
    	   \RequirePackage{fullpage}
      \fi
    \fi
+
+     \newcommand\@shorttitle{}
+     \newcommand\shorttitle[1]{\renewcommand\@shorttitle{#1}}
+      
+     \RequirePackage{fancyhdr}
+     \ifmczchem@tuftesque     
+       \ifmczchem@twoside
+         \fancyfootoffset[LE,RO]{\marginparsep+\marginparwidth}
+       \else
+         \fancyfootoffset[R]{\marginparsep+\marginparwidth}
+       \fi
+     \fi
+     \fancypagestyle{mczchem}{%
+       \setlength{\headheight}{0pt}%
+       \fancyhf{}% No header/footer
+       \renewcommand{\headrulewidth}{0pt}% No header rule
+       \renewcommand{\footrulewidth}{0pt}% No footer rule
+       \fancyfoot[L]{\sffamily\ifdefempty{\@shorttitle}{\@title}{\@shorttitle}}
+       \fancyfoot[C]{\sffamily\thedate}
+       \fancyfoot[R]{\sffamily Page \thepage}
+     }
+
+     \AtBeginDocument{\pagestyle{mczchem}}
+     \let\ps@plain\ps@mczchem
+   
+
 }
 
 
@@ -286,9 +325,10 @@
 \def\subsectionautorefname{\sectionautorefname}
 \def\subsubsectionautorefname{\sectionautorefname}
 
-\newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{ISBN #1}}
+\newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{ISBN~#1}}
 \newcommand{\fnhref}[2]{\href{#1}{#2}\footnote{\url{#1}}}
 \newcommand{\mailto}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
+\newcommand{\snhref}[2]{\href{#1}{#2}\sidenote{\raggedright\footnotesize\url{#1}}}
 
 % Citations
 \@ifclassloaded{tufte-handout}{\relax}{%
@@ -309,13 +349,14 @@
 \newcommand{\choice}[1]{“#1”}
 
 % List formatting
+\newcommand{\lifont}[1]{{\sfdemifamily #1}}
 \@ifclassloaded{beamer}
   {\relax}
   {%\RequirePackage{enumitem}
    %\newcommand{\enumitem}[1]{\stronghead{#1}}
    %\setlist[enumerate]{label=\enumitem{\arabic*.}}
-	\renewcommand{\labelenumi}{{\sfdemifamily\arabic{enumi}.}}
-	\renewcommand{\labelenumii}{{\sfdemifamily{(\alph{enumii})}}}
+	\renewcommand{\labelenumi}{\lifont{\arabic{enumi}.}}
+	\renewcommand{\labelenumii}{\lifont{(\alph{enumii})}}
    \renewcommand{\labelitemii}{\rule[0.5ex]{0.55ex}{0.55ex}}
   }
 \renewcommand{\arraystretch}{1.2}
@@ -326,7 +367,7 @@
 \newcommand{\about}{\ensuremath{\sim}}
 %\newcommand{\vv}{\mathitpagella{v}}
 %\newcommand{\vv}{\mathfullcal{v}}
-\newcommand{\vv}{\mathcal{v}}
+\newcommand{\vv}{\mkern-1mu\mathcal{v}}
 \newcommand{\rr}{\mathcal{r}}
 \newcommand{\MM}{\mathcal{M}\mkern-2.5mu}
 %\renewcommand{\d}{d\!} % conflicts with dot accent...maybe a better way to do this
@@ -337,10 +378,14 @@
 \renewcommand{\ij}{{i\mkern-5mu j}}
 \newcommand{\ii}{{i\mkern-3mu i}}
 \newcommand{\ji}{{j\mkern-3mu i}}
+\let\@oldbar\bar
+\let\@oldoverbar\overbar
 \let\@oldvec\vec
 \let\@oldell\ell
 \ifmczchem@usefonts
   \renewcommand{\vec}[1]{\mkern-1mu\skew{2}{\@oldvec}{#1}\mkern1mu}
+  \renewcommand{\bar}[1]{\skew{-4}{\@oldbar}{#1}}
+  \renewcommand{\overbar}[1]{\skew{-4}{\@oldoverbar}{#1}}
   \renewcommand{\ell}{\@oldell\mkern-3mu}
 \fi
 \newcommand{\uvec}[1]{\@oldvec{#1}}
@@ -460,7 +505,7 @@
 % but not inside this file
 % take a shotgun approach, since I want *my* \Angstrom, not unicode-math's pointing to
 % some crappy codepoint that no one implements.
-\AtBeginDocument{\renewcommand{\Angstrom}{Å}}
+\AtBeginDocument{\renewcommand{\Angstrom}{\mbox{Å}}}
 
 \newcommand{\microsecond}{\unit{\mu s}}
 \newcommand{\molal}{\ \mbox{\textit{m}}}
@@ -493,7 +538,7 @@
 	\ifstrempty{#1}%
     	{}%
     	{\hfill\pointlabel{#1}}%
-    \vskip \qpostskip \noindent \ignorespaces%
+    \vskip \qpostskip \noindent \ignorespaces%\@afterheading%
 }
 
 %\newcommand{\questionsecnum}{\renewcommand{\thequestion}{\thesection.\arabic{question}}}
@@ -557,7 +602,7 @@
 }
 
 % Citation notes: plain, left-justified, centered, right-justified
-\newcommand{\citenote}[1]{\scriptsize\emph{#1}}
+\newcommand{\citenote}[1]{\scriptsize#1}
 \newcommand{\citenotel}[1]{\raggedright\citenote{#1}}
 \newcommand{\citenotec}[1]{\centering\citenote{#1}}
 \newcommand{\citenoter}[1]{\raggedleft\citenote{#1}}
