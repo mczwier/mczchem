@@ -14,6 +14,7 @@
 \DeclareBoolOption[false]{color}
 \DeclareBoolOption[false]{tuftesque}
 \DeclareBoolOption[true]{twoside}
+\DeclareBoolOption[true]{headings}
 \DeclareComplementaryOption{oneside}{twoside}
 
 % General requirements
@@ -303,8 +304,10 @@
        \fancyfoot[R]{\sffamily Page \thepage}
      }
 
-     \AtBeginDocument{\pagestyle{mczchem}}
-     \let\ps@plain\ps@mczchem
+     \ifmczchem@headings
+       \AtBeginDocument{\pagestyle{mczchem}}
+       \let\ps@plain\ps@mczchem
+     \fi
    
 
 }
@@ -367,9 +370,9 @@
 \newcommand{\about}{\ensuremath{\sim}}
 %\newcommand{\vv}{\mathitpagella{v}}
 %\newcommand{\vv}{\mathfullcal{v}}
-\newcommand{\vv}{\mkern-1mu\mathcal{v}}
+\newcommand{\vv}{{\mkern-1mu\mathcal{v}}}
 \newcommand{\rr}{\mathcal{r}}
-\newcommand{\MM}{\mathcal{M}\mkern-2.5mu}
+\newcommand{\MM}{{\mathcal{M}\mkern-2.5mu}}
 %\renewcommand{\d}{d\!} % conflicts with dot accent...maybe a better way to do this
 %\newcommand{\subword}[1]{_{\text{\normalfont #1}}}
 %\newcommand{\supword}[1]{^{\text{\normalfont #1}}}
@@ -428,6 +431,8 @@
 % Scientific nomenclature and formatting
 \newcommand{\degrees}{\ensuremath{^\circ}}
 \newcommand{\kB}{\ensuremath{k_\mathrm{B}}}
+
+\newcommand{\Zeff}{\ensuremath{Z\subword{eff}}}
 
 % dirty trick for SN1, SN2: looks like \SN1, \SN2, but is really
 % \SN{1}, \SN{2}
