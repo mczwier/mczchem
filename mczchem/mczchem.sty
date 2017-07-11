@@ -3,7 +3,7 @@
 % Also includes a slew of packages: amsmath, amsthm, graphicx, tikz
 % hyperref, mhchem, enumitem, tabular
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mczchem}[2014/07/16 v0.1]
+\ProvidesPackage{mczchem}[2017/03/01 v1.1]
 
 \RequirePackage{kvoptions}
 
@@ -11,7 +11,6 @@
 \DeclareBoolOption[true]{usefonts}
 \DeclareBoolOption[true]{microtype}
 \DeclareBoolOption[true]{fullpage}
-\DeclareBoolOption[false]{color}
 \DeclareBoolOption[false]{tuftesque}
 \DeclareBoolOption[true]{twoside}
 \DeclareBoolOption[true]{headings}
@@ -33,21 +32,9 @@
 \RequirePackage{booktabs}
 \RequirePackage{multicol}
 \RequirePackage{ragged2e}
+\RequirePackage{ifthen}
 
 \ProcessKeyvalOptions*
-
-
-\ifmczchem@color
-%\definecolor{DrakeBlue}{HTML}{12367C}
-%\definecolor{DrakeCompRed}{HTML}{982700}
-\definecolor{DrakeBlue}{HTML}{004477}
-%\definecolor{DrakeCompRed}{HTML}{552222}
-\definecolor{DrakeCompRed}{HTML}{880033}
-\else
-% uuuuugly lazy hack
-\definecolor{DrakeBlue}{HTML}{000000}
-\definecolor{DrakeCompRed}{HTML}{000000}
-\fi
 
 \ifmczchem@usefonts
 	%\RequirePackage[no-math]{fontspec}
@@ -57,11 +44,10 @@
 	
 	\RequirePackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
     %\delimitershortfall=0pt
+    %\setmathfont[Scale=MatchLowercase]{texgyretermes-math.otf}
     \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
-    %\setmathfont{MinionPro}
-    %\setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
     \setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
-    %\setmathfont[range={"00C5}]{Minion Pro Regular}
+    \setmathfont[range={"00C5}]{Minion Pro Regular}
     \setmathfont[range=bfup/{num,latin,Latin,greek,Greek}]{Minion Pro Bold}
     \setmathfont[range=it/{num,latin,Latin,greek,Greek}]{MinionPro-It}
     \setmathfont[range=bfit/{num,latin,Latin,greek,Greek}]{MinionPro-BoldIt}
@@ -73,18 +59,20 @@
     %     \setmathfont[range=bfsfup/{num,latin,Latin,greek,Greek}]{Myriad Pro Bold}
     %     \setmathfont[range=bfsfit/{num,latin,Latin,greek,Greek}]{Myriad Pro Bold Italic}
     %   }
-    %\setmathfont[range={"0111}]{Asana Math}
-    \setmathfont[range={"20D7},Scale=0.9]{Asana Math} % nice long vector arrow
-    \setmathfont[range={"305}]{Asana Math} % overbar
+    %     \setmathfont[range={"0111}]{Asana Math}
+    %     \setmathfont[range={"005B,"005D,"0028,"0029,"007B,"007D}]{Minion Pro} % fixes small but breaks big delimiters
+    %\setmathfont[range={"005B,"005D,"0028,"0029,"007B,"007D},Scale=MatchLowercase]{xits-math.otf}
+    %\setmathfont[range={"20D7},Scale=0.8]{Asana Math} % nice long vector arrow
+    %\setmathfont[range={"305}]{Asana Math} % overbar
     \setmathfont[range={"2113}]{MinionPro-It} % force italic ell
     \setmathfont[range=scr,Scale=MatchLowercase]{XITS Math}
     %\setmathfont[range=cal,StylisticSet={1},Scale=MatchLowercase]{XITS Math} %too thick
     %\setmathfont[range=cal,Scale=MatchLowercase]{TeX Gyre Chorus}
     %\setmathfont[range=cal,Scale=MatchUppercase]{latinmodern-math.otf} % baseline way off
     %\setmathfont[range=cal,Scale=MatchLowercase,StylisticSet={1}]{Asana-Math.otf}
-    \setmathrm{Minion Pro}
-    \setmathsf{Myriad Pro}
-    \setmathtt{Consolas}
+    %\setmathrm{Minion Pro}
+    %\setmathsf{Myriad Pro}
+    %\setmathtt{Consolas}
 
     %\setmathfontface\mathpagella{texgyrepagella.otf}[Scale=MatchLowercase]
     \setmathfontface\mathitpagella{texgyrepagella-italic.otf}[Scale=MatchLowercase]
@@ -95,8 +83,8 @@
 				 BoldFont=Minion Pro Bold,
 				 BoldItalicFont=MinionPro-BoldIt]{Minion Pro Regular}
  	%\setmonofont[Scale=MatchLowercase]{Cousine}
-    %\setmonofont[Scale=MatchLowercase]{Source Code Pro}
-    \setmonofont[Scale=0.925]{Consolas}
+    \setmonofont[Scale=MatchLowercase]{Source Code Pro}
+    %\setmonofont[Scale=0.925]{Consolas}
 	
 	\newfontfamily\rmdemifamily{Minion Pro Semibold}%
 	[ItalicFont=MinionPro-SemiboldIt,
@@ -155,16 +143,15 @@
 \@ifclassloaded{beamer}
   {\relax}
   {
-  \ifmczchem@usefonts
 	\RequirePackage{tocloft}
 	\RequirePackage{titlesec}
 	\RequirePackage{titling}
-
+    \ifmczchem@usefonts
 
 	% titlesec
-	\titleformat*{\section}{\Large\headfamily\bfseries\color{DrakeBlue}}
-	\titleformat*{\subsection}{\large\headfamily\bfseries\color{DrakeBlue}}
-	\titleformat*{\subsubsection}{\headfamily\bfseries\color{DrakeBlue}}
+	\titleformat*{\section}{\Large\headfamily\bfseries}
+	\titleformat*{\subsection}{\large\headfamily\bfseries}
+	\titleformat*{\subsubsection}{\headfamily\bfseries}
 	
 	% titling
     \pretitle{\begin{center}\LARGE\headfamily\bfseries}
@@ -175,24 +162,20 @@
     \postauthor{\end{tabular}\par\end{center}}
     \predate{\begin{center}\large\mdseries\subtitleface}
     \postdate{\par\end{center}}
-	%\renewcommand{\maketitlehooka}{\headfamily\bfseries\color{DrakeBlue}}
-	%\renewcommand{\maketitlehookb}{\mdseries\subtitleface\color{DrakeBlue}}
 	
 	% tocloft
-	\renewcommand{\cfttoctitlefont}{\Large\headfamily\bfseries\color{DrakeBlue}}
-    \renewcommand{\cftloftitlefont}{\Large\headfamily\bfseries\color{DrakeBlue}}
+	\renewcommand{\cfttoctitlefont}{\Large\headfamily\bfseries}
+    \renewcommand{\cftloftitlefont}{\Large\headfamily\bfseries}
     %\renewcommand{\cftfigfont}{\sfdemifamily}
-    \renewcommand{\cftfigfont}{\color{DrakeBlue}}
-    \renewcommand{\cftfigpagefont}{\color{DrakeBlue}}
 	%\renewcommand{\cftchapfont}{\headfamily\bfseries}
-	\renewcommand{\cftsecfont}{\sffamily\bfseries\color{DrakeBlue}}
-	\renewcommand{\cftsecpagefont}{\sffamily\bfseries\color{DrakeBlue}}
+	\renewcommand{\cftsecfont}{\sffamily\bfseries}
+	\renewcommand{\cftsecpagefont}{\sffamily\bfseries}
     \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-    \renewcommand{\cftsubsecfont}{\sfdemifamily\color{DrakeBlue}}
-    \renewcommand{\cftsubsecpagefont}{\sfdemifamily\color{DrakeBlue}}
+    \renewcommand{\cftsubsecfont}{\sfdemifamily}
+    \renewcommand{\cftsubsecpagefont}{\sfdemifamily}
     \renewcommand{\cftsubsecleader}{\hfill}
-    \renewcommand{\cftsubsubsecfont}{\sfmediumfamily\color{DrakeBlue}}
-    \renewcommand{\cftsubsubsecpagefont}{\sfdemifamily\color{DrakeBlue}}
+    \renewcommand{\cftsubsubsecfont}{\sfmediumfamily}
+    \renewcommand{\cftsubsubsecpagefont}{\sfdemifamily}
     \renewcommand{\cftsubsubsecleader}{\hfill}
 
    \fi
@@ -200,6 +183,7 @@
    \ifmczchem@tuftesque
      %\linespread{1.0833333333}
      %\linespread{1.1666666666}
+   \RequirePackage[strict]{changepage}
      \RequirePackage[letterpaper,%
                      %twoside,%
                      %asymmetric,%
@@ -233,7 +217,7 @@
 
      %\setstretch{1.16666666666}
      %\setstretch{1.125} % halfway between 1.083 which is too little and 1.16 which is too much
-     \setstretch{1.08333333333}
+     \ifthenelse{\@ptsize = 0}{\setstretch{1.08333333333}}{\relax}
      
      \setlength{\droptitle}{-2em plus 1 em minus 1 em}
      \renewcommand{\maketitlehooka}{\begin{fullwidth}}
@@ -243,15 +227,15 @@
      \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small,skip=0pt}
      \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small}
-     \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
-     \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries\color{DrakeBlue}}
-     \renewcommand{\cftfigfont}{\headfamily\bfseries\color{DrakeBlue}}
-     \renewcommand{\cftfigpagefont}{\headfamily\bfseries\color{DrakeBlue}}
+     \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries}
+     \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries}
+     \renewcommand{\cftfigfont}{\headfamily\bfseries}
+     \renewcommand{\cftfigpagefont}{\headfamily\bfseries}
      \setlength{\cftbeforesecskip}{0.5ex}
      \setlength{\cftbeforesubsecskip}{0ex}
-	 \titleformat*{\section}{\large\headfamily\bfseries\color{DrakeBlue}}
-  	 \titleformat*{\subsection}{\headfamily\bfseries\color{DrakeBlue}}
-	 \titleformat*{\subsubsection}{\headfamily\color{DrakeBlue}}
+	 \titleformat*{\section}{\large\headfamily\bfseries}
+     \titleformat*{\subsection}{\headfamily\bfseries}
+	 \titleformat*{\subsubsection}{\headfamily}
      \newcommand{\marginparskip}{\vspace{1.8pc plus 0.5pc minus 0.5pc}}
      \newcommand{\marginsmall}{\small\linespread{\marginparspread}}
      \RequirePackage{environ}
@@ -267,6 +251,8 @@
      \NewEnviron{mpar}{\marginpar{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
      \NewEnviron{snote}{\sidenote{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
      \newcommand{\mnote}[1]{\sidenote{\marginfont\setstretch{\marginparspread}#1\marginparskip}}
+     \WithSuffix\newcommand\mnote*[1]{\marginpar{\marginfont\setstretch{\marginparspread}#1\marginparskip}}
+     
      %\NewEnviron{meqn}{\begin{mpar}\begin{equation}\BODY\end{equation}\end{mpar}}
        
      \newenvironment{fullwidth}{%
@@ -286,6 +272,7 @@
      \newcommand\@shorttitle{}
      \newcommand\shorttitle[1]{\renewcommand\@shorttitle{#1}}
       
+     \@ifclassloaded{exam}{\relax}{%
      \RequirePackage{fancyhdr}
      \ifmczchem@tuftesque     
        \ifmczchem@twoside
@@ -308,7 +295,7 @@
        \AtBeginDocument{\pagestyle{mczchem}}
        \let\ps@plain\ps@mczchem
      \fi
-   
+   }
 
 }
 
@@ -316,11 +303,7 @@
 % Hyperlinks
 \PassOptionsToPackage{hyphens}{url}
 \RequirePackage{hyperref}
-%
-%\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=DrakeBlue,citecolor=DrakeBlue,urlcolor=DrakeBlue,breaklinks=true}
-\@ifclassloaded{beamer}
-  {\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,breaklinks=true}}
-  {\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=DrakeCompRed,citecolor=DrakeCompRed,urlcolor=DrakeCompRed,breaklinks=true}}
+\hypersetup{bookmarks=true,pdfborder={0 0 0},colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black,breaklinks=true}
 
 %\def\sectionautorefname{Section}
 \def\chapterautorefname{Chapter}
@@ -376,8 +359,13 @@
 %\renewcommand{\d}{d\!} % conflicts with dot accent...maybe a better way to do this
 %\newcommand{\subword}[1]{_{\text{\normalfont #1}}}
 %\newcommand{\supword}[1]{^{\text{\normalfont #1}}}
-\newcommand{\subword}[1]{_{\mathup{#1}}}
-\newcommand{\supword}[1]{^{\mathup{#1}}}
+\ifmczchem@usefonts
+  \newcommand{\subword}[1]{_{\mathup{#1}}}
+  \newcommand{\supword}[1]{^{\mathup{#1}}}
+\else
+  \newcommand{\subword}[1]{_{\mathrm{#1}}}
+  \newcommand{\supword}[1]{^{\mathrm{#1}}}
+\fi
 \renewcommand{\ij}{{i\mkern-5mu j}}
 \newcommand{\ii}{{i\mkern-3mu i}}
 \newcommand{\ji}{{j\mkern-3mu i}}
@@ -387,11 +375,12 @@
 \let\@oldell\ell
 \ifmczchem@usefonts
   \renewcommand{\vec}[1]{\mkern-1mu\skew{2}{\@oldvec}{#1}\mkern1mu}
+  %\renewcommand{\vec}[1]{\overrightarrow{#1}}
   \renewcommand{\bar}[1]{\skew{-4}{\@oldbar}{#1}}
   \renewcommand{\overbar}[1]{\skew{-4}{\@oldoverbar}{#1}}
   \renewcommand{\ell}{\@oldell\mkern-3mu}
 \fi
-\newcommand{\uvec}[1]{\@oldvec{#1}}
+%\newcommand{\uvec}[1]{\@oldvec{#1}}
 
 \newcommand{\mat}[1]{\mathbfup{#1}}
 \newcommand{\Real}{\mathbb{R}}
@@ -402,6 +391,7 @@
 \newcommand{\braket}[2]{\ensuremath{\left< #1 \left| \right. #2 \right>}}
 \WithSuffix\newcommand\braket*[3]{\ensuremath{\left< #1 \left| \mkern3mu #2 \mkern3mu \right| #3 \right>}}
 \newcommand{\operator}[1]{\ensuremath{\widehat{#1}}}
+\newcommand{\commutator}[2]{\ensuremath{\sqbrackets{#1,#2}}}
 
 
 %  unit vectors
@@ -425,7 +415,7 @@
 \newcommand{\of}{\fnparens}
 \providecommand{\to}{\rightarrow}
 \newcommand{\sqbrackets}[1]{\ensuremath{\left[#1\right]}}
-\newcommand{\magn}[1]{\ensuremath{\left|#1\right|}}
+\newcommand{\magn}[1]{\ensuremath{\left|\mkern2mu#1\mkern1mu\right|}}
 \newcommand{\curlybrackets}[1]{\ensuremath{\left\{#1\right\}}}
 
 % Scientific nomenclature and formatting
@@ -510,7 +500,9 @@
 % but not inside this file
 % take a shotgun approach, since I want *my* \Angstrom, not unicode-math's pointing to
 % some crappy codepoint that no one implements.
-\AtBeginDocument{\renewcommand{\Angstrom}{\mbox{Å}}}
+\ifmczchem@usefonts
+  \AtBeginDocument{\renewcommand{\Angstrom}{\mbox{Å}}}
+\fi
 
 \newcommand{\microsecond}{\unit{\mu s}}
 \newcommand{\molal}{\ \mbox{\textit{m}}}
@@ -526,7 +518,7 @@
 \newcounter{question}%[section]
 \newcommand{\@questionword}{Question}
 \newcommand{\questionlabel}{\stronghead{{\@questionword} \thequestion}}
-\newcommand{\pointlabel}[1]{\stronghead{(#1 points)}}
+\newcommand{\pointlabel}[1]{\stronghead{(#1)}}
 %\newcommand{\question}{\refstepcounter{question}\par\vspace{1.5ex}\noindent\questionlabel.\par\noindent}
 %\newcommand\question[1][]{%
 %  \refstepcounter{question}\par\vspace{1.5ex}\noindent\questionlabel.%
@@ -538,16 +530,15 @@
 \newcommand{\qpreskip}{2ex plus 0.5ex minus 0.5ex}
 \newcommand{\qpostskip}{0.25ex plus 0.125ex minus 0.25ex}
 \DeclareDocumentCommand{\question}{O{}}{%
-	\refstepcounter{question}%
-	\vskip \qpreskip \noindent \questionlabel%
-	\ifstrempty{#1}%
-    	{}%
-    	{\hfill\pointlabel{#1}}%
-    \vskip \qpostskip \noindent \ignorespaces%\@afterheading%
+  \refstepcounter{question}%
+  \par\vspace{\qpreskip}\pagebreak[1]\noindent\questionlabel%
+  \ifstrempty{#1}%
+    {}%
+    {\hfill\pointlabel{#1}}%
+  \nopagebreak
+  \par\vspace{\qpostskip}\@afterindentfalse\@afterheading
 }
 
-%\newcommand{\questionsecnum}{\renewcommand{\thequestion}{\thesection.\arabic{question}}}
-%\newcommand{\questionplainnum}{\renewcommand{\thequestion}{\arabic{question}}}
 \newcommand{\questionsecnum}{\counterwithin{question}{section}}
 \newcommand{\questionplainnum}{\counterwithout{question}{section}}
 
@@ -627,7 +618,7 @@
 \newcommand{\PrincGenChemCite}{From Averill and Eldredge, \href{http://2012books.lardbucket.org/books/principles-of-general-chemistry-v1.0/}{\emph{Chemistry: Principles, Patterns, and Applications}}}
 \newcommand{\DefaultIncludeGraphics}[1]{\includegraphics[width=\linewidth,height=0.8\textheight,keepaspectratio]{#1}}
 \newcommand{\greektext}[1]{\emph{\textrm{#1}}}
-\newcommand{\wikilink}[2]{From Wikipedia, \href{#2}{(“#1”)}}
+\newcommand{\wikilink}[2]{\href{#2}{Wikipedia (“#1”)}}
 
 
 % Tests, quizzes, etc
