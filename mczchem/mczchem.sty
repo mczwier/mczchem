@@ -42,7 +42,7 @@
     %\directlua{fontspec = fontspec or {} fontspec.sprint = tex.sprint}
 	\defaultfontfeatures{Ligatures=TeX}
 	
-	\RequirePackage[math-style=ISO,bold-style=ISO,vargreek-shape=unicode]{unicode-math}
+	\RequirePackage[math-style=ISO,bold-style=ISO]{unicode-math}
     %\delimitershortfall=0pt
     %\setmathfont[Scale=MatchLowercase]{texgyretermes-math.otf}
     \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
@@ -70,9 +70,19 @@
     %\setmathfont[range=cal,Scale=MatchLowercase]{TeX Gyre Chorus}
     %\setmathfont[range=cal,Scale=MatchUppercase]{latinmodern-math.otf} % baseline way off
     %\setmathfont[range=cal,Scale=MatchLowercase,StylisticSet={1}]{Asana-Math.otf}
-    %\setmathrm{Minion Pro}
-    %\setmathsf{Myriad Pro}
-    %\setmathtt{Consolas}
+    \setmathrm{Minion Pro}
+    \setmathsf{Myriad Pro}
+    \setmathtt{Consolas}
+
+    %\AtBeginDocument{%
+    %  \let\phi\varphi
+    %  \let\epsilon\varepsilon
+    %}
+
+    \AtBeginDocument{%
+      \let\phi=φ
+      \let\epsilon=ε
+    }
 
     %\setmathfontface\mathpagella{texgyrepagella.otf}[Scale=MatchLowercase]
     \setmathfontface\mathitpagella{texgyrepagella-italic.otf}[Scale=MatchLowercase]
@@ -327,12 +337,20 @@
 
 % Formatting
 \newcommand{\acro}[1]{\textsc{\expandafter\MakeLowercase\expandafter{#1}}}
-\newcommand{\strong}[1]{\textbf{#1}}
+% \newcommand{\strong}[1]{\textbf{#1}}
 \newcommand{\stronghead}[1]{\textbf{\headfamily #1}}
 \newcommand{\thead}[1]{\stronghead{#1}}
 \newcommand{\filename}[1]{\nolinkurl{#1}}
 \newcommand{\hostname}[1]{\nolinkurl{#1}}
 \newcommand{\choice}[1]{“#1”}
+
+% Footnote without number
+\WithSuffix\newcommand\footnote*[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
 
 % List formatting
 \newcommand{\lifont}[1]{{\sfdemifamily #1}}
@@ -345,6 +363,7 @@
 	\renewcommand{\labelenumii}{\lifont{(\alph{enumii})}}
    \renewcommand{\labelitemii}{\rule[0.5ex]{0.55ex}{0.55ex}}
   }
+\newcommand{\inlinelabel}[1]{{\lifont{(#1)}}}
 \renewcommand{\arraystretch}{1.2}
 
 % Math formatting
