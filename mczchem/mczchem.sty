@@ -3,7 +3,9 @@
 % Also includes a slew of packages: amsmath, amsthm, graphicx, tikz
 % hyperref, mhchem, enumitem, tabular
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mczchem}[2017/03/01 v1.1]
+\ProvidesPackage{mczchem}[2017/11/14 v1.2]
+
+\usepackage[utf8]{inputenc}
 
 \RequirePackage{kvoptions}
 
@@ -46,11 +48,40 @@
     %\delimitershortfall=0pt
     %\setmathfont[Scale=MatchLowercase]{texgyretermes-math.otf}
     \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
-    \setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
+    % \setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
+    \setmathfont[range=up/{num,latin,Latin,greek,Greek},
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Caption},
+            {Size={8.4-13},Font=MinionPro-Regular},
+            {Size={13-19.9},Font=Minion-Pro-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Display}
+          }
+        ]{Minion Pro Regular}
     \setmathfont[range={"00C5}]{Minion Pro Regular}
-    \setmathfont[range=bfup/{num,latin,Latin,greek,Greek}]{Minion Pro Bold}
-    \setmathfont[range=it/{num,latin,Latin,greek,Greek}]{MinionPro-It}
-    \setmathfont[range=bfit/{num,latin,Latin,greek,Greek}]{MinionPro-BoldIt}
+    \setmathfont[range=bfup/{num,latin,Latin,greek,Greek},
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Bold-Caption},
+            {Size={8.4-13},Font=MinionPro-Bold},
+            {Size={13-19.9},Font=Minion-Pro-Bold-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Bold-Display}
+          }
+        ]{MinionPro-Bold}
+    \setmathfont[range=it/{num,latin,Latin,greek,Greek},
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Italic-Caption},
+            {Size={8.4-13},Font=MinionPro-It},
+            {Size={13-19.9},Font=Minion-Pro-Italic-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Italic-Display}
+          }
+        ]{MinionPro-It}
+    \setmathfont[range=bfit/{num,latin,Latin,greek,Greek},
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Bold-Italic-Caption},
+            {Size={8.4-13},Font=MinionPro-BoldIt},
+            {Size={13-19.9},Font=Minion-Pro-Bold-Italic-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Bold-Italic-Display}
+          }
+        ]{MinionPro-BoldIt}
     % \@ifclassloaded{beamer}
     %   {\relax}
     %   {
@@ -89,9 +120,38 @@
     \setmathfontface\mathfullcal{Tex Gyre Chorus}[Scale=MatchLowercase]
     \renewcommand{\mathcal}[1]{\mathfullcal{#1}}
 
-	\setmainfont[ItalicFont=MinionPro-It,
-				 BoldFont=Minion Pro Bold,
-				 BoldItalicFont=MinionPro-BoldIt]{Minion Pro Regular}
+	\setmainfont[UprightFeatures={
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Caption},
+            {Size={8.4-13},Font=MinionPro-Regular},
+            {Size={13-19.9},Font=Minion-Pro-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Display}
+        },
+    },
+    BoldFeatures={
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Bold-Caption},
+            {Size={8.4-13},Font=MinionPro-Bold},
+            {Size={13-19.9},Font=Minion-Pro-Bold-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Bold-Display}
+        },
+    },
+    ItalicFeatures={
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Italic-Caption},
+            {Size={8.4-13},Font=MinionPro-It},
+            {Size={13-19.9},Font=Minion-Pro-Italic-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Italic-Display}
+            },
+    },
+    BoldItalicFeatures={
+        SizeFeatures={ 
+            {Size={-8.4},Font=Minion-Pro-Bold-Italic-Caption},
+            {Size={8.4-13},Font=MinionPro-BoldIt},
+            {Size={13-19.9},Font=Minion-Pro-Bold-Italic-Subhead},
+            {Size={19.9-},Font=Minion-Pro-Bold-Italic-Display}
+        },
+    }]{Minion Pro}
  	%\setmonofont[Scale=MatchLowercase]{Cousine}
     \setmonofont[Scale=MatchLowercase]{Source Code Pro}
     %\setmonofont[Scale=0.925]{Consolas}
@@ -131,10 +191,13 @@
 	\newfontface\subtitleface{Optima LT Std Medium}
 	}
 
-\else
+ \else
+    \newcommand\mathup\mathrm
+
 	\newcommand\rmdemifamily\bfseries
 	\newcommand\sfmediumfamily{\sffamily\mdseries}
 	\newcommand\sfdemifamily{\sffamily\bfseries}
+    \newcommand\subtitleface\sffamily
 \fi
 
 \newcommand\headfamily\sffamily
@@ -156,7 +219,7 @@
 	\RequirePackage{tocloft}
 	\RequirePackage{titlesec}
 	\RequirePackage{titling}
-    \ifmczchem@usefonts
+    %\ifmczchem@usefonts
 
 	% titlesec
 	\titleformat*{\section}{\Large\headfamily\bfseries}
@@ -188,7 +251,7 @@
     \renewcommand{\cftsubsubsecpagefont}{\sfdemifamily}
     \renewcommand{\cftsubsubsecleader}{\hfill}
 
-   \fi
+   %\fi
 
    \ifmczchem@tuftesque
      %\linespread{1.0833333333}
@@ -309,6 +372,12 @@
 
 }
 
+
+\ifmczchem@usefonts
+\relax
+\else
+\newcommand{\increment}{\Delta}
+\fi
 
 % Hyperlinks
 \PassOptionsToPackage{hyphens}{url}
@@ -521,7 +590,9 @@
 % some crappy codepoint that no one implements.
 \ifmczchem@usefonts
   \AtBeginDocument{\renewcommand{\Angstrom}{\mbox{Å}}}
-\fi
+\else
+  \newcommand{\Angstrom}{\mbox{Å}}
+\fi  
 
 \newcommand{\microsecond}{\unit{\mu s}}
 \newcommand{\molal}{\ \mbox{\textit{m}}}
@@ -546,7 +617,7 @@
 %}
 %\leavevmode\unskip foo\ignorespaces
 \RequirePackage{noindentafter}
-\newcommand{\qpreskip}{2ex plus 0.5ex minus 0.5ex}
+\newcommand{\qpreskip}{2ex plus 0.5ex minus 1.5ex}
 \newcommand{\qpostskip}{0.25ex plus 0.125ex minus 0.25ex}
 \DeclareDocumentCommand{\question}{O{}}{%
   \refstepcounter{question}%

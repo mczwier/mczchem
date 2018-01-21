@@ -11,4 +11,8 @@ for d in *; do
     ln -svf $PWD/$d $TMFROOT/tex/latex
 done
 
+for d in *.def; do
+    ln -svf $PWD/$d $TMFROOT/tex/latex
+done
+
 texhash $TMFROOT
