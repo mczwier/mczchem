@@ -3,7 +3,7 @@
 % Also includes a slew of packages: amsmath, amsthm, graphicx, tikz
 % hyperref, mhchem, enumitem, tabular
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mczchem}[2017/11/14 v1.2]
+\ProvidesPackage{mczchem}[2021/04/01 v1.5]
 
 \usepackage[utf8]{inputenc}
 
@@ -16,6 +16,7 @@
 \DeclareBoolOption[false]{tuftesque}
 \DeclareBoolOption[true]{twoside}
 \DeclareBoolOption[true]{headings}
+\DeclareBoolOption[false]{answers}
 \DeclareComplementaryOption{oneside}{twoside}
 
 % General requirements
@@ -35,6 +36,9 @@
 \RequirePackage{multicol}
 \RequirePackage{ragged2e}
 \RequirePackage{ifthen}
+\RequirePackage{cancel}
+\RequirePackage{comment}
+\RequirePackage{framed}
 
 \ProcessKeyvalOptions*
 
@@ -43,7 +47,7 @@
     \RequirePackage[no-math]{fontspec}
     %\directlua{fontspec = fontspec or {} fontspec.sprint = tex.sprint}
 	\defaultfontfeatures{Ligatures=TeX}
-	
+
 	\RequirePackage[math-style=ISO,bold-style=ISO]{unicode-math}
     %\delimitershortfall=0pt
     %\setmathfont[Scale=MatchLowercase]{texgyretermes-math.otf}
@@ -94,7 +98,7 @@
     %     \setmathfont[range={"005B,"005D,"0028,"0029,"007B,"007D}]{Minion Pro} % fixes small but breaks big delimiters
     %\setmathfont[range={"005B,"005D,"0028,"0029,"007B,"007D},Scale=MatchLowercase]{xits-math.otf}
     %\setmathfont[range={"20D7},Scale=0.8]{Asana Math} % nice long vector arrow
-    %\setmathfont[range={"305}]{Asana Math} % overbar
+    \setmathfont[range={"305}]{Asana Math} % overbar
     \setmathfont[range={"2113}]{MinionPro-It} % force italic ell
     \setmathfont[range=scr,Scale=MatchLowercase]{XITS Math}
     %\setmathfont[range=cal,StylisticSet={1},Scale=MatchLowercase]{XITS Math} %too thick
@@ -118,6 +122,7 @@
     %\setmathfontface\mathpagella{texgyrepagella.otf}[Scale=MatchLowercase]
     \setmathfontface\mathitpagella{texgyrepagella-italic.otf}[Scale=MatchLowercase]
     \setmathfontface\mathfullcal{Tex Gyre Chorus}[Scale=MatchLowercase]
+    \setmathfontface\mathgent{Gentium Plus}[Scale=MatchLowercase]
     \renewcommand{\mathcal}[1]{\mathfullcal{#1}}
 
 	\setmainfont[UprightFeatures={
@@ -153,7 +158,7 @@
         },
     }]{Minion Pro}
  	%\setmonofont[Scale=MatchLowercase]{Cousine}
-    \setmonofont[Scale=MatchLowercase]{Source Code Pro}
+    \setmonofont[Scale=0.91]{Source Code Pro}
     %\setmonofont[Scale=0.925]{Consolas}
 	
 	\newfontfamily\rmdemifamily{Minion Pro Semibold}%
@@ -172,7 +177,9 @@
 	[ItalicFont=Optima LT Std Demibold Italic,
 	BoldFont=Optima LT Std Extra Black,
 	BoldItalicFont=OptimaLTStd-XBlackItalic,
-    Scale=MatchLowercase]
+        Scale=MatchLowercase]
+
+        \newfontfamily\helvfamily{TeX Gyre Heros}
 	
 	\@ifclassloaded{beamer}{
 	\setsansfont%
@@ -203,7 +210,8 @@
 \newcommand\headfamily\sffamily
 	
 \ifmczchem@microtype
-	\RequirePackage{microtype}
+  \RequirePackage{microtype}
+  \DeclareMicrotypeAlias{MinionPro}{pmnx}
 \fi
 
 % Captions
@@ -300,6 +308,7 @@
      \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small,skip=0pt}
      \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small}
+     \DeclareCaptionStyle{widetable}{labelfont={bf,sf},font=small}
      \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries}
      \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries}
      \renewcommand{\cftfigfont}{\headfamily\bfseries}
@@ -307,7 +316,7 @@
      \setlength{\cftbeforesecskip}{0.5ex}
      \setlength{\cftbeforesubsecskip}{0ex}
 	 \titleformat*{\section}{\large\headfamily\bfseries}
-     \titleformat*{\subsection}{\headfamily\bfseries}
+     \titleformat*{\subsection}{\sfmediumfamily\itshape}
 	 \titleformat*{\subsubsection}{\headfamily}
      \newcommand{\marginparskip}{\vspace{1.8pc plus 0.5pc minus 0.5pc}}
      \newcommand{\marginsmall}{\small\linespread{\marginparspread}}
@@ -406,12 +415,13 @@
 
 % Formatting
 \newcommand{\acro}[1]{\textsc{\expandafter\MakeLowercase\expandafter{#1}}}
-% \newcommand{\strong}[1]{\textbf{#1}}
+\providecommand{\strong}[1]{\textbf{#1}}
 \newcommand{\stronghead}[1]{\textbf{\headfamily #1}}
 \newcommand{\thead}[1]{\stronghead{#1}}
 \newcommand{\filename}[1]{\nolinkurl{#1}}
 \newcommand{\hostname}[1]{\nolinkurl{#1}}
 \newcommand{\choice}[1]{“#1”}
+\newcommand{\selection}[1]{“#1”}
 
 % Footnote without number
 \WithSuffix\newcommand\footnote*[1]{%
@@ -430,7 +440,9 @@
    %\setlist[enumerate]{label=\enumitem{\arabic*.}}
 	\renewcommand{\labelenumi}{\lifont{\arabic{enumi}.}}
 	\renewcommand{\labelenumii}{\lifont{(\alph{enumii})}}
-   \renewcommand{\labelitemii}{\rule[0.5ex]{0.55ex}{0.55ex}}
+    \renewcommand{\labelitemii}{\rule[0.5ex]{0.55ex}{0.55ex}}
+    \renewcommand{\descriptionlabel}[1]{\hspace{\labelsep}\stronghead{#1}}
+
   }
 \newcommand{\inlinelabel}[1]{{\lifont{(#1)}}}
 \renewcommand{\arraystretch}{1.2}
@@ -457,19 +469,19 @@
 \renewcommand{\ij}{{i\mkern-5mu j}}
 \newcommand{\ii}{{i\mkern-3mu i}}
 \newcommand{\ji}{{j\mkern-3mu i}}
-\let\@oldbar\bar
+%\let\@oldbar\bar
 \let\@oldoverbar\overbar
 \let\@oldvec\vec
 \let\@oldell\ell
 \ifmczchem@usefonts
   \renewcommand{\vec}[1]{\mkern-1mu\skew{2}{\@oldvec}{#1}\mkern1mu}
   %\renewcommand{\vec}[1]{\overrightarrow{#1}}
-  \renewcommand{\bar}[1]{\skew{-4}{\@oldbar}{#1}}
+  %\renewcommand{\bar}[1]{\skew{-2}{\@oldbar}{#1}}
   \renewcommand{\overbar}[1]{\skew{-4}{\@oldoverbar}{#1}}
   \renewcommand{\ell}{\@oldell\mkern-3mu}
 \fi
-%\newcommand{\uvec}[1]{\@oldvec{#1}}
-
+% \newcommand{\uvec}[1]{\@oldvec{#1}}
+  
 \newcommand{\mat}[1]{\mathbfup{#1}}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\Complex}{\mathbb{C}}
@@ -508,7 +520,8 @@
 
 % Scientific nomenclature and formatting
 \newcommand{\degrees}{\ensuremath{^\circ}}
-\newcommand{\kB}{\ensuremath{k_\mathrm{B}}}
+\newcommand{\kB}{\ensuremath{k_{\mathup{B}}}}
+\newcommand{\NA}{\ensuremath{N_{\mathup{A}}}}
 
 \newcommand{\Zeff}{\ensuremath{Z\subword{eff}}}
 
@@ -524,6 +537,7 @@
 \newcommand{\Std}{\ensuremath{^\circ}}
 \newcommand{\rxn}{\subword{rxn}}
 \newcommand{\conc}[1]{\ensuremath{\sqbrackets{\ce{#1}}}}
+\newcommand{\press}[1]{\ensuremath{P_{\ce{#1}}}}
 
 \newcommand{\FaradayConst}{\ensuremath{\mathcal{F}}}
 \newcommand{\Ecell}{\ensuremath{E_{\mathrm{cell}}}}
@@ -531,16 +545,16 @@
 
 %  pH, pOH, pKa, pKb, etc
 \newcommand{\p}{\ensuremath{\mathup{p}}}
-\newcommand{\Kw}{\ensuremath{K_\mathup{w}}}
+\newcommand{\Kw}{\ensuremath{K_{\mathup{w}}}}
 \newcommand{\pKw}{\ensuremath{\p \Kw}}
 \newcommand{\pH}{\ensuremath{\mathup{pH}}}
 \newcommand{\pOH}{\ensuremath{\mathup{pOH}}}
 
-\newcommand{\Ksp}{\ensuremath{K_\mathup{sp}}}
+\newcommand{\Ksp}{\ensuremath{K_{\mathup{sp}}}}
 
 \newcommand\Ka[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{K_\mathup{a}}%
+    \ensuremath{K_{\mathup{a}}}%
   }{%
     \ensuremath{K_{\mathup{a}_{#1}}}%
   }%
@@ -548,7 +562,7 @@
 
 \newcommand\pKa[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{\mathup{p}K_\mathup{a}}%
+    \ensuremath{\mathup{p}K_{\mathup{a}}}%
   }{%
     \ensuremath{\mathup{p}K_{\mathup{a}_{#1}}}%
   }%
@@ -556,7 +570,7 @@
 
 \newcommand\Kb[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{K_\mathup{b}}%
+    \ensuremath{K_{\mathup{b}}}%
   }{%
     \ensuremath{K_{\mathup{b}_{#1}}}%
   }%
@@ -564,7 +578,7 @@
 
 \newcommand\pKb[1][]{%
   \ifstrempty{#1}{%
-    \ensuremath{\mathrm{p}K_\mathup{b}}%
+    \ensuremath{\mathrm{p}K_{\mathup{b}}}%
   }{%
     \ensuremath{\mathrm{p}K_{\mathup{b}_{#1}}}%
   }%
@@ -578,11 +592,20 @@
 % argument
 \newcommand\unit[1]{\ensuremath{\;\text{#1}}}
 \WithSuffix\newcommand\unit*[1]{\ensuremath{\text{#1}}}
-% \munit(*) uses mathrm and does support math in its argument
+% \munit(*) uses mathup and does support math in its argument
 \newcommand\munit[1]{\ensuremath{\ \mathup{#1}}}
 \WithSuffix\newcommand\munit*[1]{\ensuremath{\mathup{#1}}}
+% \munitc(*) has its units canceled
+\newcommand\munitc[1]{\ensuremath{\ \cancel{\mathup{#1}}}}
+\WithSuffix\newcommand\munitc*[1]{\ensuremath{\cancel{\mathup{#1}}}}
+% \munith uses a hyphen instead of a space
+\newcommand\munith[1]{\ensuremath{\text{-}\mathup{#1}}}
+
 \newcommand{\degC}{\unit{°C}}
 \WithSuffix\newcommand\degC*{\unit*{°C}}
+\newcommand{\degF}{\unit{°F}}
+\WithSuffix\newcommand\degF*{\unit*{°F}}
+
 
 % \Angstrom is defined somewhere else, visible to \renewcommand *outside* of this file
 % but not inside this file
@@ -592,7 +615,11 @@
   \AtBeginDocument{\renewcommand{\Angstrom}{\mbox{Å}}}
 \else
   \newcommand{\Angstrom}{\mbox{Å}}
-\fi  
+\fi
+
+% Where is varepsilon?
+\newcommand{\epsilonNaught}{\ensuremath{{\mathgent{ϵ}}_0}}
+
 
 \newcommand{\microsecond}{\unit{\mu s}}
 \newcommand{\molal}{\ \mbox{\textit{m}}}
@@ -601,14 +628,33 @@
 \newcommand{\MolPerLAtm}{\ensuremath{\unit{mol}\cdot\unit*{L}^{-1}\cdot\unit*{atm}^{-1}}}
 \newcommand{\LBarMolK}{\ensuremath{\unit{L}\cdot\unit*{bar}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
 
+% General formatting
+\newenvironment{interlude}
+{\par\nobreak\noindent\hrulefill\par\noindent\stronghead{Interlude:\hspace{0.7em plus 0.2em minus 0.2em}}}
+{\par\nobreak\noindent\hrulefill}
+
 % Question formatting
 \@ifclassloaded{exam}%
-{\relax}%
+{%
+  \renewcommand{\questionlabel}{\stronghead{\thequestion.}}
+  \renewcommand{\thepartno}{\arabic{partno}}
+\renewcommand{\partlabel}{\stronghead{\thequestion.\thepartno.}}
+\renewcommand{\subpartlabel}{\stronghead{\thesubpart.}}
+\renewcommand{\subsubpartlabel}{\stronghead{(\thesubsubpart)}}
+\renewcommand{\thechoice}{\alph{choice}}
+\renewcommand{\choicelabel}{\stronghead{(\thechoice)}}
+
+\newcommand{\@solutionword}{Solution}
+\newcommand{\solutionword}[1]{\renewcommand{\@solutionword}{#1}}
+\solutionword{Answer}
+\renewcommand{\solutiontitle}{\noindent\stronghead{\@solutionword:}\enspace}
+}%
 {%
 \newcounter{question}%[section]
 \newcommand{\@questionword}{Question}
-\newcommand{\questionlabel}{\stronghead{{\@questionword} \thequestion}}
-\newcommand{\pointlabel}[1]{\stronghead{(#1)}}
+\newcommand{\questionlabelformat}{\sfdemifamily}
+\newcommand{\questionlabel}{{\questionlabelformat \@questionword~\thequestion}}
+\newcommand{\pointlabel}[1]{{\questionlabelformat(#1)}}
 %\newcommand{\question}{\refstepcounter{question}\par\vspace{1.5ex}\noindent\questionlabel.\par\noindent}
 %\newcommand\question[1][]{%
 %  \refstepcounter{question}\par\vspace{1.5ex}\noindent\questionlabel.%
@@ -635,17 +681,45 @@
 \questionplainnum
 
 \newcommand{\questionword}[1]{\renewcommand{\@questionword}{#1}}
+
+\@ifclassloaded{beamer}{\relax}{
+  \RequirePackage{enumitem}
+  \newenvironment{subquestions}{\begin{enumerate}[label=\lifont{(\alph*)}]}{\end{enumerate}}
 }
+
+
+\newenvironment{answer}{\begin{oframed}{\noindent\questionlabelformat Answer: }}{\end{oframed}}
+\newcommand{\AnswersClearPage}{\clearpage}
+\newcommand{\QuestionsClearPage}{\clearpage}
+
+\ifmczchem@answers
+  \renewcommand{\QuestionsClearPage}{}
+\else
+  \renewenvironment{answer}{}{}
+  \excludecomment{answer}
+  \renewcommand{\AnswersClearPage}{}
+\fi
+
+} % end else block of \@ifclassloaded{exam}
 \providecommand*{\questionautorefname}{Question}
 
 % Extensions to the exam class (exams, quizzes, printed surveys, etc)
 \@ifclassloaded{exam}
-  {\newenvironment{mccheckboxes}[1]{\begin{checkboxes}\begin{multicols}{#1}}{\end{multicols}\end{checkboxes}}}
-  {\relax}
+{
+  \newenvironment{mccheckboxes}[1]{\begin{checkboxes}\begin{multicols}{#1}}{\end{multicols}\end{checkboxes}}
+  \newenvironment{mcchoices}[1]{\begin{choices}\begin{multicols}{#1}}{\end{multicols}\end{choices}}
+  \newcommand{\blankchoice}{\vspace*{\baselineskip}}
+}
+{\relax}
+
+\newenvironment{twocolenumerate}{\begin{multicols*}{2}\begin{enumerate}}{\end{enumerate}\end{multicols*}}
+\newcommand{\tcepad}{\vspace*{\baselineskip}}
+
 
 % Presentation set up
 
-\@ifclassloaded{beamer}{
+  \@ifclassloaded{beamer}{
+    \beamertemplatenavigationsymbolsempty
 \renewcommand{\sectionname}{Part}
 \setbeamertemplate{itemize item}{\scriptsize\raise1.25pt\hbox{\donotcoloroutermaths$\bullet$}}
 \setbeamertemplate{itemize subitem}{\rule[0.5ex]{0.55ex}{0.55ex}}
@@ -670,6 +744,16 @@
 \newcommand{\citequote}[1]{\begin{flushright}\usebeamerfont*{block body}\small\cqleader #1\end{flushright}}
 
 \newcommand{\blankslide}{\only<beamer>{\begin{frame}\end{frame}}}
+
+% Environment automatically creates a group
+\newenvironment{blackbg}{%
+  \setbeamercolor{background canvas}{bg=black}
+  \setbeamercolor{palette primary}{fg=white}
+  \setbeamercolor{palette secondary}{fg=white}
+  \setbeamercolor{palette tertiary}{fg=white}
+  \setbeamercolor{palette quaternary}{fg=white}
+  \setbeamercolor{structure}{fg=white}
+}{}
 
 \newcommand{\sectionnote}[1]{%
     \begin{tikzpicture}[remember picture,overlay]
@@ -698,8 +782,8 @@
 
 \mode<presentation>{\usetheme{default}\usecolortheme{dove}\usefonttheme{professionalfonts}}
 }{
-	\newcommand{\cqleader}{—\ }
-	\newcommand{\citequote}[1]{\begin{flushright}\small\cqleader #1\end{flushright}}
+  \newcommand{\cqleader}{—\ }
+  \newcommand{\citequote}[1]{\begin{flushright}\small\cqleader #1\end{flushright}}
 }
 
 % Gen chem beamer stuff, possibly useful elsewhere
@@ -717,10 +801,39 @@
 \newcommand{\notabove}{\instnote{None of the above.}}
 \newcommand{\underblank}{\underline{\hspace{6em}}}
 
+\def\hrulefillthick{\leavevmode\leaders\hrule height 0.15ex\hfill\kern\z@}
+\newcommand{\fillunderblank}{\,\hrulefillthick}
+\newcommand{\smallunderblank}{\underline{\hspace{4em}}}
+\newcommand{\tinyunderblank}{\underline{\hspace{2em}}}
+
+
 % Graphics file naming
 % \RequirePackage{grffile}
 \DeclareGraphicsRule{.ai}{pdf}{.ai}{}
 
 
+% Chemical drawings
+\RequirePackage{chemfig}
+\RequirePackage{mol2chemfig}
+\setchemfig{
+  double bond sep=0.325em,
+  atom sep=2em,
+  bond offset=0.18265em,
+  bond style={line width = 0.06642em}
+}
+\tikzset{mcfbond/.style={line width = 0.06642em}}
+%\setdoublesep{0.325em}
+% \setatomsep{1.78500 em}    % 'Fixed Length'
+%\setatomsep{2em}
+%\setbondoffset{0.18265 em} % 'Margin Width'
+%\newcommand{\bondwidth}{0.06642 em} % 'Line Width'
+%\setbondstyle{line width = \bondwidth}
+\renewcommand*\printatom[1]{\ensuremath{\mathsf{#1}}}
 
+% Sectioning
+\newcommand{\unnumberedsection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}}
 
+% Constants
+\newcommand{\hValue}{\ensuremath{6.62607015 \times 10^{−34}\munit{J\cdot s}}}
+\newcommand{\cValue}{\ensuremath{2.99792458 \times 10^{8}\munit{m/s}}}
+\newcommand{\NAValue}{\ensuremath{6.02214076\times 10^{23}}}

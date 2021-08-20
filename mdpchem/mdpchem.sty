@@ -268,8 +268,11 @@
 \newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{ISBN~#1}}
 \newcommand{\fnhref}[2]{\href{#1}{#2}\footnote{\url{#1}}}
 \newcommand{\mailto}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
-\newcommand{\snhref}[2]{\href{#1}{#2}\sidenote{\raggedright\footnotesize\url{#1}}}
-
+\ifmdpchem@tuftesque
+  \newcommand{\snhref}[2]{\href{#1}{#2}\sidenote{\raggedright\footnotesize\url{#1}}}
+\else
+  \newcommand{\snhref}{\fnhref}
+\fi
 % Citations
 \RequirePackage[numbers,comma,super,sort&compress]{natbib}
 \RequirePackage{natmove}

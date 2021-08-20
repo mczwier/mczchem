@@ -6,11 +6,11 @@
 
 % \setbondstyle is defined by chemfig. Here, we wrap it
 % in order to also save the bond style in a tikz key.
-\let\mcf@setbondstyle\setbondstyle
-\renewcommand{\setbondstyle}[1]{%
-    \mcf@setbondstyle{#1}%
-    \tikzset{mcfbond/.style={#1}}%
-}
+%\let\mcf@setbondstyle\setbondstyle
+%\renewcommand{\setbondstyle}[1]{%
+%    \mcf@setbondstyle{#1}%
+%    \tikzset{mcfbond/.style={#1}}%
+%}
 
 % this macro (by Christian Tellechea) draws circles in aromatic rings. 
 \def\mcfcringle#1{% 
