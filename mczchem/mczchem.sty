@@ -54,7 +54,7 @@
     \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
     % \setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
     \setmathfont[range=up/{num,latin,Latin,greek,Greek},
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Caption},
             {Size={8.4-13},Font=MinionPro-Regular},
             {Size={13-19.9},Font=Minion-Pro-Subhead},
@@ -63,7 +63,7 @@
         ]{Minion Pro Regular}
     \setmathfont[range={"00C5}]{Minion Pro Regular}
     \setmathfont[range=bfup/{num,latin,Latin,greek,Greek},
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Bold-Caption},
             {Size={8.4-13},Font=MinionPro-Bold},
             {Size={13-19.9},Font=Minion-Pro-Bold-Subhead},
@@ -71,7 +71,7 @@
           }
         ]{MinionPro-Bold}
     \setmathfont[range=it/{num,latin,Latin,greek,Greek},
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Italic-Caption},
             {Size={8.4-13},Font=MinionPro-It},
             {Size={13-19.9},Font=Minion-Pro-Italic-Subhead},
@@ -79,7 +79,7 @@
           }
         ]{MinionPro-It}
     \setmathfont[range=bfit/{num,latin,Latin,greek,Greek},
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Bold-Italic-Caption},
             {Size={8.4-13},Font=MinionPro-BoldIt},
             {Size={13-19.9},Font=Minion-Pro-Bold-Italic-Subhead},
@@ -126,7 +126,7 @@
     \renewcommand{\mathcal}[1]{\mathfullcal{#1}}
 
 	\setmainfont[UprightFeatures={
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Caption},
             {Size={8.4-13},Font=MinionPro-Regular},
             {Size={13-19.9},Font=Minion-Pro-Subhead},
@@ -134,7 +134,7 @@
         },
     },
     BoldFeatures={
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Bold-Caption},
             {Size={8.4-13},Font=MinionPro-Bold},
             {Size={13-19.9},Font=Minion-Pro-Bold-Subhead},
@@ -142,7 +142,7 @@
         },
     },
     ItalicFeatures={
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Italic-Caption},
             {Size={8.4-13},Font=MinionPro-It},
             {Size={13-19.9},Font=Minion-Pro-Italic-Subhead},
@@ -150,7 +150,7 @@
             },
     },
     BoldItalicFeatures={
-        SizeFeatures={ 
+        SizeFeatures={
             {Size={-8.4},Font=Minion-Pro-Bold-Italic-Caption},
             {Size={8.4-13},Font=MinionPro-BoldIt},
             {Size={13-19.9},Font=Minion-Pro-Bold-Italic-Subhead},
@@ -160,19 +160,19 @@
  	%\setmonofont[Scale=MatchLowercase]{Cousine}
     \setmonofont[Scale=0.91]{Source Code Pro}
     %\setmonofont[Scale=0.925]{Consolas}
-	
+
 	\newfontfamily\rmdemifamily{Minion Pro Semibold}%
 	[ItalicFont=MinionPro-SemiboldIt,
      BoldFont=Minion Pro Bold,
      BoldItalicFont=MinionPro-BoldIt,
      Scale=MatchLowercase]
-	 
+
 	\newfontfamily\sfmediumfamily{Optima LT Std Medium}%
 	[ItalicFont=Optima LT Std Medium Italic,
 	BoldFont=Optima LT Std Black,
 	BoldItalicFont=Optima LT Std Black Italic,
     Scale=MatchLowercase]
-	
+
 	\newfontfamily\sfdemifamily{Optima LT Std Demibold}%
 	[ItalicFont=Optima LT Std Demibold Italic,
 	BoldFont=Optima LT Std Extra Black,
@@ -180,7 +180,7 @@
         Scale=MatchLowercase]
 
         \newfontfamily\helvfamily{TeX Gyre Heros}
-	
+
 	\@ifclassloaded{beamer}{
 	\setsansfont%
  	[ Scale=MatchLowercase,
@@ -189,7 +189,7 @@
    	  BoldItalicFont=OptimaLTStd-DemiBold-Italic]{Optima LT Std}
 	  \newfontface\subtitleface{Optima LT Std Demibold}
 	  %\usepackage{mathpazo}
-	  
+
 	}{\setsansfont%
  	[ Scale=MatchLowercase,
 	  ItalicFont=Optima LT Std Italic,
@@ -208,7 +208,7 @@
 \fi
 
 \newcommand\headfamily\sffamily
-	
+
 \ifmczchem@microtype
   \RequirePackage{microtype}
   \DeclareMicrotypeAlias{MinionPro}{pmnx}
@@ -233,7 +233,7 @@
 	\titleformat*{\section}{\Large\headfamily\bfseries}
 	\titleformat*{\subsection}{\large\headfamily\bfseries}
 	\titleformat*{\subsubsection}{\headfamily\bfseries}
-	
+
 	% titling
     \pretitle{\begin{center}\LARGE\headfamily\bfseries}
     \posttitle{\par\end{center}\vskip 0.5em}
@@ -243,7 +243,7 @@
     \postauthor{\end{tabular}\par\end{center}}
     \predate{\begin{center}\large\mdseries\subtitleface}
     \postdate{\par\end{center}}
-	
+
 	% tocloft
 	\renewcommand{\cfttoctitlefont}{\Large\headfamily\bfseries}
     \renewcommand{\cftloftitlefont}{\Large\headfamily\bfseries}
@@ -299,7 +299,7 @@
      %\setstretch{1.16666666666}
      %\setstretch{1.125} % halfway between 1.083 which is too little and 1.16 which is too much
      \ifthenelse{\@ptsize = 0}{\setstretch{1.08333333333}}{\relax}
-     
+
      \setlength{\droptitle}{-2em plus 1 em minus 1 em}
      \renewcommand{\maketitlehooka}{\begin{fullwidth}}
      \renewcommand{\maketitlehookd}{\end{fullwidth}\vspace{1.5em plus 1.5em minus 1em}}
@@ -307,8 +307,8 @@
      \DeclareCaptionStyle{margintable}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small,skip=0pt}
-     \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small}
-     \DeclareCaptionStyle{widetable}{labelfont={bf,sf},font=small}
+     \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small,margin={0pc,-14pc}}
+     \DeclareCaptionStyle{widetable}{labelfont={bf,sf},font=small,margin={0pc,-14pc}}
      \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries}
      \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries}
      \renewcommand{\cftfigfont}{\headfamily\bfseries}
@@ -334,17 +334,17 @@
      \NewEnviron{snote}{\sidenote{\marginfont\setstretch{\marginparspread}\BODY\marginparskip}}
      \newcommand{\mnote}[1]{\sidenote{\marginfont\setstretch{\marginparspread}#1\marginparskip}}
      \WithSuffix\newcommand\mnote*[1]{\marginpar{\marginfont\setstretch{\marginparspread}#1\marginparskip}}
-     
+
      %\NewEnviron{meqn}{\begin{mpar}\begin{equation}\BODY\end{equation}\end{mpar}}
-       
+
      \newenvironment{fullwidth}{%
        \begin{adjustwidth*}{0in}{-14pc}
      }{%
        \end{adjustwidth*}
      }
-     
+
      \renewcommand{\thesidenote}{{\sfdemifamily\alph{sidenote}}}
-     
+
    \else
      \ifmczchem@fullpage
    	   \RequirePackage{fullpage}
@@ -353,10 +353,10 @@
 
      \newcommand\@shorttitle{}
      \newcommand\shorttitle[1]{\renewcommand\@shorttitle{#1}}
-      
+
      \@ifclassloaded{exam}{\relax}{%
      \RequirePackage{fancyhdr}
-     \ifmczchem@tuftesque     
+     \ifmczchem@tuftesque
        \ifmczchem@twoside
          \fancyfootoffset[LE,RO]{\marginparsep+\marginparwidth}
        \else
@@ -481,7 +481,7 @@
   \renewcommand{\ell}{\@oldell\mkern-3mu}
 \fi
 % \newcommand{\uvec}[1]{\@oldvec{#1}}
-  
+
 \newcommand{\mat}[1]{\mathbfup{#1}}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\Complex}{\mathbb{C}}
@@ -588,7 +588,7 @@
 \newcommand{\codelit}[1]{\texttt{\detokenize{#1}}}
 
 % Units
-% \unit(*) changes with text font and does not support math in its 
+% \unit(*) changes with text font and does not support math in its
 % argument
 \newcommand\unit[1]{\ensuremath{\;\text{#1}}}
 \WithSuffix\newcommand\unit*[1]{\ensuremath{\text{#1}}}
