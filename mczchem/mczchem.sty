@@ -98,8 +98,11 @@
     %     \setmathfont[range={"005B,"005D,"0028,"0029,"007B,"007D}]{Minion Pro} % fixes small but breaks big delimiters
     %\setmathfont[range={"005B,"005D,"0028,"0029,"007B,"007D},Scale=MatchLowercase]{xits-math.otf}
     %\setmathfont[range={"20D7},Scale=0.8]{Asana Math} % nice long vector arrow
-    \setmathfont[range={"305}]{Asana Math} % overbar
+    % \setmathfont[range={"305}]{Asana Math} % overbar
+
+
     \setmathfont[range={"2113}]{MinionPro-It} % force italic ell
+    %\setmathfont[range={"B1}]{XITS Math}
     \setmathfont[range=scr,Scale=MatchLowercase]{XITS Math}
     %\setmathfont[range=cal,StylisticSet={1},Scale=MatchLowercase]{XITS Math} %too thick
     %\setmathfont[range=cal,Scale=MatchLowercase]{TeX Gyre Chorus}
@@ -197,7 +200,8 @@
    	  BoldFont=Optima LT Std Bold,
    	  BoldItalicFont=Optima LT Std Bold Italic]{Optima LT Std}
 	\newfontface\subtitleface{Optima LT Std Medium}
-	}
+      }
+
  \else
     \newcommand\mathup\mathrm
 
@@ -483,6 +487,11 @@
 \fi
 % \newcommand{\uvec}[1]{\@oldvec{#1}}
 
+% From https://tex.stackexchange.com/a/22134
+\newcommand{\@ploverkern}{\mkern 2mu}
+\newcommand{\@nloverkern}{\mkern -2mu}
+\newcommand{\loverline}[1]{\@ploverkern\overline{\@nloverkern#1\@nloverkern}\@ploverkern}
+
 \newcommand{\mat}[1]{\mathbfup{#1}}
 \newcommand{\Real}{\mathbb{R}}
 \newcommand{\Complex}{\mathbb{C}}
@@ -523,7 +532,6 @@
 \newcommand{\degrees}{\ensuremath{^\circ}}
 \newcommand{\kB}{\ensuremath{k_{\mathup{B}}}}
 \newcommand{\NA}{\ensuremath{N_{\mathup{A}}}}
-
 \newcommand{\Zeff}{\ensuremath{Z\subword{eff}}}
 
 % dirty trick for SN1, SN2: looks like \SN1, \SN2, but is really
@@ -628,6 +636,7 @@
 \newcommand{\LTorrMolK}{\ensuremath{\unit{L}\cdot\unit*{Torr}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
 \newcommand{\MolPerLAtm}{\ensuremath{\unit{mol}\cdot\unit*{L}^{-1}\cdot\unit*{atm}^{-1}}}
 \newcommand{\LBarMolK}{\ensuremath{\unit{L}\cdot\unit*{bar}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
+\newcommand{\molar}[1]{\loverline{#1}}
 
 % General formatting
 \newenvironment{interlude}
@@ -798,6 +807,7 @@
 
 % Tests, quizzes, etc
 \newcommand\instnote[1]{\emph{(#1)}}
+\newcommand\sourcenote[1]{\emph{(#1)}}
 \newcommand{\allabove}{\instnote{All of the above.}}
 \newcommand{\notabove}{\instnote{None of the above.}}
 \newcommand{\underblank}{\underline{\hspace{6em}}}
@@ -838,3 +848,6 @@
 \newcommand{\hValue}{\ensuremath{6.62607015 \times 10^{−34}\munit{J\cdot s}}}
 \newcommand{\cValue}{\ensuremath{2.99792458 \times 10^{8}\munit{m/s}}}
 \newcommand{\NAValue}{\ensuremath{6.02214076\times 10^{23}}}
+
+% Abbreviations
+\newcommand{\SI}{\acro{SI}}
