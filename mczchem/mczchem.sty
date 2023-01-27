@@ -39,6 +39,9 @@
 \RequirePackage{cancel}
 \RequirePackage{comment}
 \RequirePackage{framed}
+\RequirePackage{xkeyval}
+\RequirePackage{media9}
+
 
 \ProcessKeyvalOptions*
 
@@ -55,35 +58,35 @@
     % \setmathfont[range=up/{num,latin,Latin,greek,Greek}]{Minion Pro Regular}
     \setmathfont[range=up/{num,latin,Latin,greek,Greek},
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Caption},
+            {Size={-8.4},Font=MinionPro-Capt},
             {Size={8.4-13},Font=MinionPro-Regular},
-            {Size={13-19.9},Font=Minion-Pro-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Display}
+            {Size={13-19.9},Font=MinionPro-Subh},
+            {Size={19.9-},Font=MinionPro-Disp}
           }
-        ]{Minion Pro Regular}
+        ]{MinionPro-Regular}
     \setmathfont[range={"00C5}]{Minion Pro Regular}
     \setmathfont[range=bfup/{num,latin,Latin,greek,Greek},
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Bold-Caption},
+            {Size={-8.4},Font=MinionPro-BoldCapt},
             {Size={8.4-13},Font=MinionPro-Bold},
-            {Size={13-19.9},Font=Minion-Pro-Bold-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Bold-Display}
+            {Size={13-19.9},Font=MinionPro-Bold-Subh},
+            {Size={19.9-},Font=MinionPro-Bold-Disp}
           }
         ]{MinionPro-Bold}
     \setmathfont[range=it/{num,latin,Latin,greek,Greek},
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Italic-Caption},
+            {Size={-8.4},Font=MinionPro-ItCapt},
             {Size={8.4-13},Font=MinionPro-It},
-            {Size={13-19.9},Font=Minion-Pro-Italic-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Italic-Display}
+            {Size={13-19.9},Font=MinionPro-ItSubh},
+            {Size={19.9-},Font=MinionPro-ItDisp}
           }
         ]{MinionPro-It}
     \setmathfont[range=bfit/{num,latin,Latin,greek,Greek},
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Bold-Italic-Caption},
+            {Size={-8.4},Font=MinionPro-BoldIt-Capt},
             {Size={8.4-13},Font=MinionPro-BoldIt},
-            {Size={13-19.9},Font=Minion-Pro-Bold-Italic-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Bold-Italic-Display}
+            {Size={13-19.9},Font=MinionPro-BoldIt-Subh},
+            {Size={19.9-},Font=Minion-Pro-Bold-ItDisp}
           }
         ]{MinionPro-BoldIt}
     % \@ifclassloaded{beamer}
@@ -130,34 +133,34 @@
 
 	\setmainfont[UprightFeatures={
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Caption},
+          {Size={-8.4},Font=MinionPro-Capt},
             {Size={8.4-13},Font=MinionPro-Regular},
-            {Size={13-19.9},Font=Minion-Pro-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Display}
+            {Size={13-19.9},Font=MinionPro-Subh},
+            {Size={19.9-},Font=MinionPro-Disp}
         },
     },
     BoldFeatures={
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Bold-Caption},
+            {Size={-8.4},Font=MinionPro-BoldCapt},
             {Size={8.4-13},Font=MinionPro-Bold},
-            {Size={13-19.9},Font=Minion-Pro-Bold-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Bold-Display}
+            {Size={13-19.9},Font=MinionPro-Bold-Subh},
+            {Size={19.9-},Font=MinionPro-Bold-Disp}
         },
     },
     ItalicFeatures={
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Italic-Caption},
+            {Size={-8.4},Font=MinionPro-ItCapt},
             {Size={8.4-13},Font=MinionPro-It},
-            {Size={13-19.9},Font=Minion-Pro-Italic-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Italic-Display}
+            {Size={13-19.9},Font=MinionPro-ItSubh},
+            {Size={19.9-},Font=MinionPro-ItDisp}
             },
     },
     BoldItalicFeatures={
         SizeFeatures={
-            {Size={-8.4},Font=Minion-Pro-Bold-Italic-Caption},
+            {Size={-8.4},Font=MinionPro-BoldIt-Capt},
             {Size={8.4-13},Font=MinionPro-BoldIt},
-            {Size={13-19.9},Font=Minion-Pro-Bold-Italic-Subhead},
-            {Size={19.9-},Font=Minion-Pro-Bold-Italic-Display}
+            {Size={13-19.9},Font=MinionPro-BoldIt-Subh},
+            {Size={19.9-},Font=MinionPro-BoldIt-Disp}
         },
     }]{Minion Pro}
  	%\setmonofont[Scale=MatchLowercase]{Cousine}
@@ -294,9 +297,13 @@
      \newcommand{\marginparspread}{1.0}
      \renewcommand{\marginfont}{\small}
      \RequirePackage{marginfix}
-     \setlength{\marginposadjustment}{-\baselineskip}
-     \renewcommand{\marginnotevadjust}{-\baselineskip}
+     \setlength{\marginposadjustment}{-0.5\baselineskip}
+     \renewcommand{\marginnotevadjust}{-0.5\baselineskip}
      %\setlength{\marginnotevadjust}{-\baselineskip}
+     %\setlength{\marginposadjustment}{0in}
+     %\renewcommand{\marginnotevadjust}{0in}
+
+
      \RequirePackage{titling}
      \RequirePackage{setspace}
 
@@ -311,8 +318,12 @@
      \DeclareCaptionStyle{margintable}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{marginfigure}{labelfont={bf,sf},font=small,skip=0.5ex}
      \DeclareCaptionStyle{sidecaption}{labelfont={bf,sf},font=small,skip=0pt}
-     \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small,margin={0pc,-14pc}}
-     \DeclareCaptionStyle{widetable}{labelfont={bf,sf},font=small,margin={0pc,-14pc}}
+
+     % This bug fixed in caption package sometime around May 2022
+     % \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small,margin={0pc,-14pc}}
+     % \DeclareCaptionStyle{widetable}{labelfont={bf,sf},font=small,margin={0pc,-14pc}}
+     \DeclareCaptionStyle{widefigure}{labelfont={bf,sf},font=small,margin={0pc,0pc}}
+     \DeclareCaptionStyle{widetable}{labelfont={bf,sf},font=small,margin={0pc,0pc}}
      \renewcommand{\cfttoctitlefont}{\large\headfamily\bfseries}
      \renewcommand{\cftloftitlefont}{\large\headfamily\bfseries}
      \renewcommand{\cftfigfont}{\headfamily\bfseries}
@@ -403,7 +414,7 @@
 \def\subsectionautorefname{\sectionautorefname}
 \def\subsubsectionautorefname{\sectionautorefname}
 
-\newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{ISBN~#1}}
+\newcommand{\isbnref}[1]{\href{http://www.amazon.com/gp/search/?field-isbn=#1}{\acro{ISBN}~#1}}
 \newcommand{\fnhref}[2]{\href{#1}{#2}\footnote{\url{#1}}}
 \newcommand{\mailto}[1]{\href{mailto:#1}{\nolinkurl{#1}}}
 \newcommand{\snhref}[2]{\href{#1}{#2}\sidenote{\raggedright\footnotesize\url{#1}}}
@@ -531,6 +542,7 @@
 % Scientific nomenclature and formatting
 \newcommand{\degrees}{\ensuremath{^\circ}}
 \newcommand{\kB}{\ensuremath{k_{\mathup{B}}}}
+\newcommand{\kC}{\ensuremath{k_{\mathup{C}}}}
 \newcommand{\NA}{\ensuremath{N_{\mathup{A}}}}
 \newcommand{\Zeff}{\ensuremath{Z\subword{eff}}}
 
@@ -544,7 +556,16 @@
 \newcommand{\Solid}{\cephase{s}}
 \newcommand{\Aq}{\cephase{aq}}
 \newcommand{\Std}{\ensuremath{^\circ}}
+
+\newcommand{\qsys}{\ensuremath{q\subword{sys}}}
+\newcommand{\wsys}{\ensuremath{w\subword{sys}}}
+\newcommand{\DUsys}{\ensuremath{\increment U\subword{sys}}}
+\newcommand{\qsurr}{\ensuremath{q\subword{surr}}}
+\newcommand{\wsurr}{\ensuremath{w\subword{surr}}}
+\newcommand{\DUsurr}{\ensuremath{\increment U\subword{surr}}}
 \newcommand{\rxn}{\subword{rxn}}
+
+
 \newcommand{\conc}[1]{\ensuremath{\sqbrackets{\ce{#1}}}}
 \newcommand{\press}[1]{\ensuremath{P_{\ce{#1}}}}
 
@@ -636,7 +657,7 @@
 \newcommand{\LTorrMolK}{\ensuremath{\unit{L}\cdot\unit*{Torr}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
 \newcommand{\MolPerLAtm}{\ensuremath{\unit{mol}\cdot\unit*{L}^{-1}\cdot\unit*{atm}^{-1}}}
 \newcommand{\LBarMolK}{\ensuremath{\unit{L}\cdot\unit*{bar}\cdot\unit*{mol}^{-1}\cdot\unit*{K}^{-1}}}
-\newcommand{\molar}[1]{\loverline{#1}}
+\newcommand{\molar}[1]{\overline{#1}} %
 
 % General formatting
 \newenvironment{interlude}
@@ -795,6 +816,9 @@
   \newcommand{\cqleader}{—\ }
   \newcommand{\citequote}[1]{\begin{flushright}\small\cqleader #1\end{flushright}}
 }
+
+% Media embedding
+%
 
 % Gen chem beamer stuff, possibly useful elsewhere
 \newcommand{\TroCitation}{From Tro, \emph{Chemistry: Structure and Properties}}
