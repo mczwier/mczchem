@@ -3,7 +3,7 @@
 % Also includes a slew of packages: amsmath, amsthm, graphicx, tikz
 % hyperref, mhchem, enumitem, tabular
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mczchem}[2021/04/01 v1.5]
+\ProvidesPackage{mczchem}[2023/10/12 v1.6]
 
 \usepackage[utf8]{inputenc}
 
@@ -52,6 +52,10 @@
 	\defaultfontfeatures{Ligatures=TeX}
 
 	\RequirePackage[math-style=ISO,bold-style=ISO]{unicode-math}
+        \setmathrm{Minion Pro}
+    \setmathsf{Myriad Pro}
+    \setmathtt{Consolas}
+
     %\delimitershortfall=0pt
     %\setmathfont[Scale=MatchLowercase]{texgyretermes-math.otf}
     \setmathfont[Scale=MatchLowercase]{texgyrepagella-math.otf}
@@ -62,7 +66,9 @@
             {Size={8.4-13},Font=MinionPro-Regular},
             {Size={13-19.9},Font=MinionPro-Subh},
             {Size={19.9-},Font=MinionPro-Disp}
-          }
+          },
+          script-font=MinionPro-Capt,
+          sscript-font=MinionPro-Capt
         ]{MinionPro-Regular}
     \setmathfont[range={"00C5}]{Minion Pro Regular}
     \setmathfont[range=bfup/{num,latin,Latin,greek,Greek},
@@ -111,9 +117,6 @@
     %\setmathfont[range=cal,Scale=MatchLowercase]{TeX Gyre Chorus}
     %\setmathfont[range=cal,Scale=MatchUppercase]{latinmodern-math.otf} % baseline way off
     %\setmathfont[range=cal,Scale=MatchLowercase,StylisticSet={1}]{Asana-Math.otf}
-    \setmathrm{Minion Pro}
-    \setmathsf{Myriad Pro}
-    \setmathtt{Consolas}
 
     %\AtBeginDocument{%
     %  \let\phi\varphi
@@ -479,8 +482,8 @@
   \newcommand{\subword}[1]{_{\mathup{#1}}}
   \newcommand{\supword}[1]{^{\mathup{#1}}}
 \else
-  \newcommand{\subword}[1]{_{\mathrm{#1}}}
-  \newcommand{\supword}[1]{^{\mathrm{#1}}}
+  \newcommand{\subword}[1]{_{\textnormal{#1}}}
+  \newcommand{\supword}[1]{^{\textnormal{#1}}}
 \fi
 \renewcommand{\ij}{{i\mkern-5mu j}}
 \newcommand{\ii}{{i\mkern-3mu i}}
@@ -572,6 +575,7 @@
 \newcommand{\FaradayConst}{\ensuremath{\mathcal{F}}}
 \newcommand{\Ecell}{\ensuremath{E_{\mathrm{cell}}}}
 \newcommand{\Voltage}{\ensuremath{\mathcal{V}}}
+\newcommand{\oxstate}[1]{\acro{(#1)}}
 
 %  pH, pOH, pKa, pKb, etc
 \newcommand{\p}{\ensuremath{\mathup{p}}}
@@ -616,6 +620,9 @@
 
 % Programming
 \newcommand{\codelit}[1]{\texttt{\detokenize{#1}}}
+
+% Other semantic formatting
+\newcommand{\vocab}[1]{\strong{#1}}
 
 % Units
 % \unit(*) changes with text font and does not support math in its
